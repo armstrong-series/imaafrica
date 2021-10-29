@@ -47,53 +47,61 @@
 
 	@yield('css')
 
+    @yield('styles')
+	<style>
+		[v-cloak]{
+				display: none;
+		}
+	
+	</style>
+
 	@if( Auth::check() )
-<script type="text/javascript">
-//<----- Notifications
-function Notifications() {
+	<script type="text/javascript">
+		//<----- Notifications
+		function Notifications() {
 
-	 var _title = '@section("title")@show {{e($settings->title)}}';
+			var _title = '@section("title")@show {{e($settings->title)}}';
 
-	 console.time('cache');
+			console.time('cache');
 
-	 $.get(URL_BASE+"/ajax/notifications", function( data ) {
-		if ( data ) {
+			$.get(URL_BASE+"/ajax/notifications", function( data ) {
+				if ( data ) {
 
-			//* Notifications */
-			if( data.notifications != 0 ) {
+					//* Notifications */
+					if( data.notifications != 0 ) {
 
-				var totalNoty = data.notifications;
-				$('#noti_connect').html(data.notifications).fadeIn();
-			} else {
-				$('#noti_connect').html('').hide();
-			}
+						var totalNoty = data.notifications;
+						$('#noti_connect').html(data.notifications).fadeIn();
+					} else {
+						$('#noti_connect').html('').hide();
+					}
 
-			//* Error */
-			if( data.error == 1 ) {
-				window.location.reload();
-			}
+					//* Error */
+					if( data.error == 1 ) {
+						window.location.reload();
+					}
 
-			var totalGlobal = parseInt( totalNoty );
+					var totalGlobal = parseInt( totalNoty );
 
-			if( data.notifications == 0 ) {
-				$('.notify').hide();
-				$('title').html( _title );
-			}
+					if( data.notifications == 0 ) {
+						$('.notify').hide();
+						$('title').html( _title );
+					}
 
-		if( data.notifications != 0 ) {
-		    $('title').html( "("+ totalGlobal + ") " + _title );
-		  }
+				if( data.notifications != 0 ) {
+					$('title').html( "("+ totalGlobal + ") " + _title );
+				}
 
-		}//<-- DATA
+				}//<-- DATA
 
-		},'json');
+				},'json');
 
-		console.timeEnd('cache');
-}//End Function TimeLine
+				console.timeEnd('cache');
+		}//End Function TimeLine
 
-timer = setInterval("Notifications()", 10000);
-</script>
-@endif
+		timer = setInterval("Notifications()", 10000);
+	</script>
+  @endif
 
 @if($settings->google_analytics != '')
  {!! $settings->google_analytics !!}
@@ -144,6 +152,7 @@ timer = setInterval("Notifications()", 10000);
   </div>
   @endif
 
+
 		@yield('content')
 
 			@include('includes.footer')
@@ -156,11 +165,12 @@ timer = setInterval("Notifications()", 10000);
 	<script src="{{ asset('library/axios.min.js') }}"></script>
 	<script src="{{ asset('library/vue.js') }}"></script>
 	<script src="https://unpkg.com/vue-toastr/dist/vue-toastr.umd.min.js"></script>
-	<script defer src="https://pro.fontawesome.com/releases/v5.10.0/js/all.js" integrity="sha384-G/ZR3ntz68JZrH4pfPJyRbjW+c0+ojii5f+GYiYwldYU69A+Ejat6yIfLSxljXxD" 
-  		crossorigin="anonymous"></script>
-		  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
-  <script type="text/javascript">
-
+	<script defer src="https://pro.fontawesome.com/releases/v5.10.0/js/all.js"
+	 integrity="sha384-G/ZR3ntz68JZrH4pfPJyRbjW+c0+ojii5f+GYiYwldYU69A+Ejat6yIfLSxljXxD" 
+  		crossorigin="anonymous">
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+	<script type="text/javascript">
 		Cookies.set('cookieBanner');
 
 			$(document).ready(function() {

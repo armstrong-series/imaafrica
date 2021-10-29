@@ -57,7 +57,7 @@ if ( Auth::check() ) {
 					 	</li>
 
 						 <li>
-						 	<a href="#" class="font-default text-uppercase">
+						 	<a href="{{ route('user.audio')}}" class="font-default text-uppercase">
 							 Audio
 							 </a>
 					 	 </li>

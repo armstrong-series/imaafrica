@@ -11,6 +11,9 @@ new Vue({
             contributor: ""
         },
 
+        file:{
+            dropArea: ""
+        },
         
         videos: [],
 
@@ -25,7 +28,27 @@ new Vue({
     },
 
     mounted() {
-      
+      this.dropArea = document.querySelector('.drag-area');
+
+    //   Drag over File Area
+      dropArea.addEventListener('dragover', (event)=>{
+          event.preventDefault();
+          console.log("file is over DropArea here");
+          dropArea.classList.add("active");
+      });
+
+    //   Outside DropArea
+      dropArea.addEventListener('dragleave', ()=>{
+        console.log("file is outside Droprea");
+        dropArea.classList.remove("active");
+     });
+
+    //  Drop File on DropArea
+     dropArea.addEventListener('drop', ()=>{
+        event.preventDefault();
+        console.log("file is here");
+        dropArea.classList.remove("active");
+     });
 
 
     },

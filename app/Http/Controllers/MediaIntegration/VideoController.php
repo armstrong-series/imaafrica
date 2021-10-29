@@ -32,7 +32,7 @@ public function videos(){
             "videos" => $videos, 
             "countVideo" => $countVideo
         ];
-        return view('Meida.video', $data);
+        return view('Media.video', $data);
         
     } catch (Exception $error) {
        Log::info('MediaIntegration\VideoController@videos error message: ' . $error->getMessage());
@@ -157,4 +157,6 @@ private function storeVideo($key, $video = null)
     }
     return $secondName;
 }
+
+
 }

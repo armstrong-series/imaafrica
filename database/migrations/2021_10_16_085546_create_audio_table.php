@@ -17,6 +17,8 @@ class CreateAudioTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('name')->nullable();
+            $table->string('file')->nullable();
+            $table->string('uuid')->nullable();
             $table->string('category')->nullable();
             $table->string('title')->nullable();
             $table->timestamps();
