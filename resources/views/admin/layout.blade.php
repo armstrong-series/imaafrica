@@ -28,7 +28,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         folder instead of downloading all of them to reduce the load. -->
     <link href="{{ asset('admin/css/skins/skin-red.min.css')}}" rel="stylesheet" type="text/css" />
 
-    <link rel="shortcut icon" href="{{ url('img', $settings->favicon) }}" />
+    <!-- <link rel="shortcut icon" href="{{ url('img', $settings->favicon) }}" /> -->
+    <link rel="shortcut icon" href="{{ asset('img/imaafica.png') }}" />
 
     <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
 

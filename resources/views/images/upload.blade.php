@@ -21,7 +21,7 @@
 
     @if( Auth::user()->status == 'active' )
 
-@if ($settings->limit_upload_user == 0 || $imagesUploads < $settings->limit_upload_user || Auth::user()->role == 'admin')
+    @if ($settings->limit_upload_user == 0 || $imagesUploads < $settings->limit_upload_user || Auth::user()->role == 'admin')
 
 	<!-- col-md-12 -->
 	<div class="col-md-12">

@@ -5,7 +5,10 @@
     		<div class="row">
     			<div class="col-md-4">
     				<a href="{{ url('/') }}">
-    					<img src="{{ url('img', $settings->logo) }}" />
+    					<!-- <img src="{{ url('img', $settings->logo) }}" /> -->
+    					<img src="{{ asset('img/imaafica.png')  }}" />
+						<!-- <link rel="shortcut icon" href="{{ asset('img/imaafica.png') }}" /> -->
+
     				</a>
     			   <p class="margin-tp-xs">{{ $settings->description }}</p>
 

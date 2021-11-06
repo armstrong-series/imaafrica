@@ -10,6 +10,8 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Validator;
+
 
 class AudioController extends Controller
 {
@@ -18,14 +20,14 @@ class AudioController extends Controller
             $playlist = AudioModel::all();
             $countPlaylist = count($playlist);
             $data = [
-                "page" => "trackPlaylist",
+                "page" => "audios",
                 "playlist" => $playlist, 
                 "countPlaylist" => $countPlaylist
             ];
-            return view('Media.audio', $data);
+            return view('Media.audio.index', $data);
             
         } catch (Exception $error) {
-           Log::info('MediaIntegration\VideoController@videos error message: ' . $error->getMessage());
+           Log::info('MediaIntegration\AudioController@getAudioPlaylist error message: ' . $error->getMessage());
            $message = "Unable to get Resource";
            return $message;
         }
@@ -34,34 +36,35 @@ class AudioController extends Controller
 
     public function audioPlaylistHandler(Request $request){
         try {
-            if (!$request->file('audio_track')) {
-                $message = "Add a track!";
-                return response()->json(['message' => $message], 400);
-            }
 
+                 if (!$request->file('audio_track')) {
+                    $message = "Add a Track !";
+                    return response()->json(['message' => $message], 400);
+                }
+           
             if($request->hasFile("audio_track")){
                 $track_path = storage_path('app/' . Paths::PLAYLIST_PATH);
                 $extension = $request->file('audio_track')->getClientOriginalExtension();
-                if (in_array(strtolower($extension), ["mp3", "mp4", "wav", "aac"])) {
+                if (in_array(strtolower($extension), ["mp3", "wav", "aac"])) {
                     $fileName = time() . '.' . $extension;
                     $request->file('audio_track')->move($track_path, $fileName);
                     $track = new AudioModel();
                     $track->user_id = Auth::id();
                     $track->file =  $fileName;
+                    $track->category = $request->category;
+                    $track->uuid = \Str::uuid();
+                    $track->name = $request->name;
                     $track->save();
-                    $url = route('audio.playlist.details', $track->uuid);
-                    return response()->json([
-                        "status" => "success",
-                        "track" => $track,
-                        "message" => "Track Added!",
-                        "url" => $url,
-                    ], 200);
+                    $message = "Request Completed!";
+                    return response()->json(["message" => $message,"track" => $track], 200);
 
-                } else {
+                }else {
                     $message = "Invalid file format!";
                     return response()->json(['message' => $message], 400);
                 }
-            }
+                }
+
+            // }
         } catch (Exception $error) {
             Log::info('MediaIntegration\AudioController@audioPlaylistHandler error message: ' . $error->getMessage());
             $message = 'Sorry, unable to create upload audio file. Please try again';
@@ -73,50 +76,28 @@ class AudioController extends Controller
     }
     
 
-    public function editPlayList($playListUuid){
-        try {
-            $track = AudioModel::where('uuid', $playListUuid)->first();
-            if (!$track) {
-                $message = 'Track not found!';
-                return response()->json(["message" => $message], 404);
-            }
-            $data = [
-                "page" =>  "track", 
-                "sub" =>  "track",
-                "track" => $track
-            ];
-
-            return view('Media.audio.edit', $data);
-       
-        } catch (Exception $error) {
-            Log::info('MediaIntegrations\AudioController@editPlayList error message: ' . $error->getMessage());
-            $message = 'Unable to edit Track. Try Again';
-            return $message;
-        }
+    private function checkFileSize(array $data){
+        return Validator::make($data, [
+            'file' => 'max:10240',
+        ]);
     }
 
+  
     public function updateTrackDetails(Request $request)
     {
         try {
-            if (!$request->title ) {
-                $message = "Track title Required!";
-                return response()->json(['message' => $message], 400);
-            }
 
-            $track = AudioModel::where('id', $request->id)->first();
+            $track = AudioModel::where('id', $request->id)->where('user_id', Auth::id())->first();
             if (!$track ) {
                 $message = "Track not found!";
                 return response()->json(['message' => $message], 404);
             }
 
-            $track->title = $request->title ?  $request->title : $track->title;
+            $track->name = $request->name ?  $request->name : $track->name;
             $track->category = $request->category  ?  $request->category  : $track->category;
             $track->save();
-
-            return response()->json([
-                "status" => "success",
-                "message" => "Track update successful!",
-            ], 200);
+            $message = "Track update successful";
+            return response()->json(["message" => $message, "track" => $track], 200);
 
         } catch (Exception $error) {
             Log::info('Admin\AdminController@updateTrackDetails error message: ' . $error->getMessage());
@@ -132,9 +113,10 @@ class AudioController extends Controller
     public function deleteTrack(Request $request)
     {
         try {
-            $track = AudioModel::where('id', $request->id)->first();
+
+            $track = AudioModel::where('id', $request->id)->where('user_id', Auth::id())->first();
             if (!$track) {
-                $message = "Template not found!";
+                $message = "Unknown Playlist!";
                 return response()->json(['message' => $message], 404);
             }
             $track_path = Paths::PLAYLIST_PATH . $track->audio_track;
@@ -188,9 +170,10 @@ class AudioController extends Controller
             $request->file('audio_track')->move($audio_path, $fileName);
             $track->audio_track = $fileName;
             $track->save();
+            $message ="Details Updated";
             return response()->json([
-                "status" => "success",
-                "message" => "Track Updated successfully",
+                "track" =>  $track,
+                "message" => $message,
             ], 200);
 
         } catch (Exception $error) {
@@ -239,7 +222,7 @@ class AudioController extends Controller
     public function downloadAudioTrack($file){
 
         $file_path = storage_path('app/' . Paths::PLAYLIST_PATH . $file);
-        $header = ['Content-Type' => 'application/mp3, application/webm'];
+        $header = ['Content-Type' => 'audio/*'];
     
         return response()->download($file_path, $file, $header);
     }

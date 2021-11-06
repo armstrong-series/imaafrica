@@ -220,6 +220,8 @@ return [
         'Purify' => Stevebauman\Purify\Facades\Purify::class,
         'PaymentGateways' => App\Models\PaymentGateways::class,
         'Paystack' => Unicodeveloper\Paystack\Facades\Paystack::class,
+        'Arr'       => Illuminate\Support\Arr::class,
+        'Str'       => Illuminate\Support\Str::class,
 
     ],
 

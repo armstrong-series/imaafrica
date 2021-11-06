@@ -8,21 +8,23 @@ if ( Auth::check() ) {
 
 <div class="btn-block text-center class-montserrat showBanner padding-top-10 padding-bottom-10" style="display:none;">{{trans('misc.cookies_text')}} <button class="btn btn-sm btn-success" id="close-banner">{{trans('misc.go_it')}}</button></div>
 
-<div class="navbar navbar-inverse navBar">
+<div class="navbar navbar-default navBar">
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 
           	 <?php if ( isset( $totalNotify ) ) : ?>
-        	<span class="notify notifyResponsive"><?php echo $totalNotify; ?></span>
+        		<span class="notify notifyResponsive"><?php echo $totalNotify; ?></span>
         	<?php endif; ?>
-
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="{{ url('/') }}">
-          	<img src="{{ url('img', $settings->logo) }}" class="logo" />
+
+          
+				<img src="{{ asset('img/imaafica.png')  }}" class="logo" />
+	
           	</a>
         </div><!-- navbar-header -->
 
@@ -41,13 +43,13 @@ if ( Auth::check() ) {
 						</li>
 						 @endif
 
-					@if ($settings->sell_option == 'on')
-        		 <li>
-        			<a href="{{url('photos/premium')}}" class="font-default text-uppercase text-warning">
-        			<i class="icon icon-Crown myicon-right"></i>	{{trans('misc.premium')}}
-        				</a>
-        		</li>
-					@endif
+						@if ($settings->sell_option == 'on')
+							<li>
+								<a href="{{url('photos/premium')}}" class="font-default text-uppercase text-warning">
+								<i class="icon icon-Crown myicon-right"></i>	{{trans('misc.premium')}}
+									</a>
+							</li>
+						@endif
 
 						@if ( Auth::check() )
 						<li>
@@ -55,21 +57,19 @@ if ( Auth::check() ) {
 							 {{trans('misc.feed')}}
 							 </a>
 					 	</li>
-
-						 <li>
-						 	<a href="{{ route('user.audio')}}" class="font-default text-uppercase">
-							 Audio
-							 </a>
-					 	 </li>
-						  
-						<li>
-						  <a href="#" class="font-default text-uppercase">
-							Video
-							 </a>
-					 	 </li>
-
-
 					 @endif
+
+					<li>
+						<a href="{{ route('user.audio')}}" class="font-default text-uppercase {{ $page ?? '' == 'audios' ? 'active' : '' }}">
+						  Audio
+						</a>
+					</li>
+						  
+					<li>
+						<a href="{{ route('users.videos') }}" class="font-default text-uppercase">
+						Video
+						</a>
+					</li>
 
 
 
@@ -198,17 +198,17 @@ if ( Auth::check() ) {
 			          		 		</a>
 			          		 		</li>
 
-												<li>
+									<li>
 			          		 			<a href="{{ url($userAuth->username,'collections') }}">
 			          		 			<i class="fa fa-folder-open-o myicon-right"></i> {{ trans('misc.collections') }}
 			          		 			</a>
-												</li>
+									</li>
 
-	          		 		<li>
-	          		 			<a href="{{ url('likes') }}" class="text-overflow">
-	          		 				<i class="icon icon-Heart myicon-right"></i> {{ trans('users.likes') }}
-	          		 				</a>
-	          		 			</li>
+									<li>
+									<a href="{{ url('likes') }}" class="text-overflow">
+										<i class="icon icon-Heart myicon-right"></i> {{ trans('users.likes') }}
+										</a>
+									</li>
 
 	          		 		<li>
 	          		 			<a href="{{ url('account') }}" class="text-overflow">
@@ -248,7 +248,7 @@ if ( Auth::check() ) {
         			<li>
         				<a class="font-default text-uppercase @if ( $settings->registration_active == 0 ) log-in @endif" href="{{ url('login') }}">
         					{{ trans('auth.login') }}
-        					</a>
+        				</a>
         			</li>
         	  @endif
           </ul>
