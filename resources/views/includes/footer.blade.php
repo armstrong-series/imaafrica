@@ -143,9 +143,9 @@
 <footer class="subfooter">
 	<div class="container">
 	<div class="row">
-    			<div class="col-md-12 text-center padding-top-20">
-    				<p>&copy; {{ $settings->title }} - <?php echo date('Y'); ?></p>
-    			</div><!-- ./End col-md-* -->
+		<div class="col-md-12 text-center padding-top-20">
+			<p>&copy; Imaafrica All Right Reserved - <?php echo date('Y'); ?></p>
+		</div><!-- ./End col-md-* -->
 	</div>
 </div>
 </footer>

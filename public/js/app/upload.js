@@ -81,7 +81,7 @@ if (window.Vue) {
                 const formData = new FormData();
                 formData.append('_token', $('input[name=_token]').val());
                 for (let key in this.audioEdit) {
-                    let value = this.audioEdit[key];
+                      let value = this.audioEdit[key];
                     formData.append(key, value);
                 }
                 this.isLoading = true;
@@ -97,7 +97,7 @@ if (window.Vue) {
                             type: "success",
                             preventDuplicates: true,
                             progressbar: false,
-                            style: { backgroundColor: "#347C17" }
+                            style: {backgroundColor: "#347C17"}
                         });
                         this.isLoading = false;
                         

@@ -78,11 +78,6 @@ new Vue({
 
 
 
-
-
-
-
-
      
         uploadVideo(){
             this.isLoading = true;

@@ -61,10 +61,11 @@ class AudioController extends Controller
                 }else {
                     $message = "Invalid file format!";
                     return response()->json(['message' => $message], 400);
-                }
+                 }
+                 
                 }
 
-            // }
+   
         } catch (Exception $error) {
             Log::info('MediaIntegration\AudioController@audioPlaylistHandler error message: ' . $error->getMessage());
             $message = 'Sorry, unable to create upload audio file. Please try again';
@@ -76,7 +77,7 @@ class AudioController extends Controller
     }
     
 
-    private function checkFileSize(array $data){
+    protected function checkFileSize(array $data){
         return Validator::make($data, [
             'file' => 'max:10240',
         ]);
@@ -114,7 +115,7 @@ class AudioController extends Controller
     {
         try {
 
-            $track = AudioModel::where('id', $request->id)->where('user_id', Auth::id())->first();
+            $track = AudioModel::where('id', $request->id)->first();
             if (!$track) {
                 $message = "Unknown Playlist!";
                 return response()->json(['message' => $message], 404);

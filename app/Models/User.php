@@ -21,24 +21,24 @@ class User extends Authenticatable
 
     protected $fillable = [
         'username',
-				'name',
-				'bio',
-				'email',
-				'password',
-				'avatar',
-				'cover',
-				'status',
-				'type_account',
-				'website',
-				'twitter',
-				'paypal_account',
-				'activation_code',
-				'oauth_uid',
-				'oauth_provider',
-				'token',
-				'authorized_to_upload',
-				'role',
-				'ip'
+        'name',
+        'bio',
+        'email',
+        'password',
+        'avatar',
+        'cover',
+        'status',
+        'type_account',
+        'website',
+        'twitter',
+        'paypal_account',
+        'activation_code',
+        'oauth_uid',
+        'oauth_provider',
+        'token',
+        'authorized_to_upload',
+        'role',
+        'ip'
     ];
 
     /**

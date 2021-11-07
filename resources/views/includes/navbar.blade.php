@@ -21,10 +21,7 @@ if ( Auth::check() ) {
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="{{ url('/') }}">
-
-          
 				<img src="{{ asset('img/imaafica.png')  }}" class="logo" />
-	
           	</a>
         </div><!-- navbar-header -->
 
