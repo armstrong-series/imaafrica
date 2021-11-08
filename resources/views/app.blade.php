@@ -27,8 +27,10 @@
 	<meta charset="utf-8">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="@yield('description_custom'){{ $settings->description }}">
-    <meta name="keywords" content="@yield('keywords_custom'){{ $settings->keywords }}" />
+    <meta name="description" content="IMAAFRICA enriching great media content">
+    <!-- <meta name="description" content="@yield('description_custom'){{ $settings->description }}"> -->
+    <meta name="keywords" content="Imaafrica, Stock Photos, Stock Videos, Video Download, Video Upload" />
+    <!-- <meta name="keywords" content="@yield('keywords_custom'){{ $settings->keywords }}" /> -->
     <!-- <link rel="shortcut icon" href="{{ url('img', $settings->favicon) }}" /> -->
     <link rel="shortcut icon" href="{{ asset('img/imaafica.png') }}" />
 
