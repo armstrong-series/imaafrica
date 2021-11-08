@@ -48,7 +48,7 @@ public function videos(){
 public function videoUploadHandler(Request $request){
     try {
 
-        dd($request->all());
+        // dd($request->all());
         if($request->hasFile('video')){
             $name = request()->file('video')->getClientOriginalName();
             // if($name == "blob"){
@@ -56,16 +56,24 @@ public function videoUploadHandler(Request $request){
             // }
             $video = new VideoModel();
             $video->user_id = Auth::id();
+            // $video->user_id = Auth::id();
             $video->uuid = \Str::uuid();
             $video->file = $this->storeVideo('video');
             $video->name = $name;
             $video->save();
-            $createGif = $this->generateVideoGif($video);
-            if($createGif['status'] == true){
-                $video->video_gif = $createGif['gif'];
-                $video->save();
-            }
-           
+            // $createGif = $this->generateVideoGif($video);
+            
+            // if($createGif['status'] == true){
+            //     $video->video_gif = $createGif['gif'];
+            //     $video->save();
+            // }
+
+            // $image = asset("img/imaafica.png");
+            // $videoWatermark = $this->generateWatermark($video, $name, $image);
+            // if($videoWatermark['status'] == true){
+            //     $video->video_watermark =  $videoWatermark['watermark'];
+            //     $video->save();
+            // }
             return response([
                 "status" => "success",
                 "message" => "Upload Successful!",
@@ -86,7 +94,6 @@ public function videoUploadHandler(Request $request){
 private function generateWatermark($videoSource, $extension, $watermark = "")
 {
     $ffmpeg = FFMpeg\FFMpeg::create();
-
     $video = $ffmpeg->open($videoSource);
     $format = new FFMpeg\Format\Video\X264('libmp3lame', 'libx264');
 
@@ -94,22 +101,20 @@ private function generateWatermark($videoSource, $extension, $watermark = "")
         $video->filters()->watermark($watermark, array(
                     'position' => 'relative',
                     'top' => 25,
-                    'right' => 50,
-                ));
+                    'right' => 50,));
     }
 
     $format-> setKiloBitrate(1000)-> setAudioChannels(2)
     -> setAudioKiloBitrate(256);
 
-    $randomFileName = rand().".$extension";
-    $saveLocation = getcwd(). '/video/'.$randomFileName;
-    $image = Storage::path(Paths::VIDEO_WATERMARK_PATH  . $randomFileName);
-    $video->save($format, $saveLocation);
-
-    if (file_exists($saveLocation))
-        return "http://localhost/test/video/$randomFileName";
-    else
-        return "http://localhost/test/thumb/404.png";
+    $randomFileName = "Imaafrica-watermark".rand().".$extension";
+    $image_path = Storage::path(Paths::VIDEO_WATERMARK_PATH  . $randomFileName);
+    $video->save($format, $$image_path);
+   
+    // if (file_exists($image_path))
+    //     return "http://localhost/test/video/$randomFileName";
+    // else
+    //     return "http://localhost/test/thumb/404.png";
 
 }
 
@@ -171,15 +176,11 @@ public function downloadVideo($file){
 
 
 public function uploadPage(){
-    // $data = [
-    //     "page" =>  "videos", 
-    //     "sub" =>  "videos",
-        
-    // ];
-
-
+   
     return view('Media.video.upload');
 }
+
+
 
 private function generateVideoGif($storedVideo){
     if (config('app.dev_os') != 'linux') {
@@ -190,7 +191,6 @@ private function generateVideoGif($storedVideo){
     } else {
         $ffmpeg = \FFMpeg\FFMpeg::create();
     }
-
 
     $storedVideoPath = Storage::path(Paths::VIDEO_PATH . $storedVideo->file);
     $gifName = str_replace(' ', '_', $storedVideo->name) . '.gif';

@@ -20,9 +20,12 @@ if (window.Vue) {
             audioFile: null,
             file: "",
 
-
+            results: [],
 
             audios: [],
+
+
+            filterTracks: '',
 
             url: {
                 audio: {
@@ -39,11 +42,11 @@ if (window.Vue) {
 
 
         mounted() {
-            console.log('content', this.audios)
+          
             this.audios = JSON.parse($('#playlists').val());
             this.url.audio.create = $('#createAudio').val();
             this.url.audio.update= $('#updateAudio').val();
-            this.url.audio.delete = $('#deletePlaylist').val();
+            this.url.audio.delete = $('#delete').val();
             this.url.audio.download = $('#download').val();
         },
 
@@ -74,6 +77,11 @@ if (window.Vue) {
                     category: this.audios[index].category,
                 }
 
+            },
+
+            searchTrack() {
+                this.results = this.filterTracks.trim() == '' ? [] :
+                this.audios.filter(each => each.name.toLowerCase().includes(this.filterTracks.toLowerCase()))
             },
 
             updateTrackDetails() {
@@ -175,7 +183,7 @@ if (window.Vue) {
 
                 const customAlert = swal({
                     title: 'Warning',
-                    text: `Are you sure you want to delete Record? This action is Permanent`,
+                    text: `This action is Permanent. Are you sure?`,
                     icon: 'warning',
                     closeOnClickOutside: false,
                     buttons: {
@@ -197,10 +205,8 @@ if (window.Vue) {
                 customAlert.then(value => {
                     if (value == 'delete') {
                         this.isLoading = true;
-
-                        axios.delete(this.url.audio.delete, { data: audio })
+                        axios.post(this.url.audio.delete, {'audio_id': audio.id })
                             .then(response => {
-                                $('#deleteTrack').modal('hide');
                                 console.log('delete', response.data);
                                 this.isLoading = false;
                                 this.audios.splice(index, 1);
@@ -229,9 +235,15 @@ if (window.Vue) {
                                         style: { backgroundColor: "red" }
                                     });
                                 } else {
-                                    this.$notify.error({
-                                        title: 'Error',
-                                        message: 'oops! Unable to complete request.'
+                                    this.$toastr.Add({
+                                        msg: "Unable to process",
+                                        clickClose: false,
+                                        timeout: 2000,
+                                        position: "toast-top-right",
+                                        type: "error",
+                                        preventDuplicates: true,
+                                        progressbar: false,
+                                        style: { backgroundColor: "red" }
                                     });
                                 }
                             });

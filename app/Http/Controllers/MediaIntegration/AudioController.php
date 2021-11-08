@@ -41,6 +41,13 @@ class AudioController extends Controller
                     $message = "Add a Track !";
                     return response()->json(['message' => $message], 400);
                 }
+
+                $allowedSize =  $this->checkFileSize($request->all());
+                if($allowedSize->fails()){
+                    $message = "Media File too large!";
+                    return response()->json(['message' => $message], 400);
+                }
+                
            
             if($request->hasFile("audio_track")){
                 $track_path = storage_path('app/' . Paths::PLAYLIST_PATH);
@@ -115,18 +122,19 @@ class AudioController extends Controller
     {
         try {
 
-            $track = AudioModel::where('id', $request->id)->first();
+            // dd($request->all());
+            $track = AudioModel::where('id', $request->audio_id)->first();
             if (!$track) {
                 $message = "Unknown Playlist!";
                 return response()->json(['message' => $message], 404);
             }
-            $track_path = Paths::PLAYLIST_PATH . $track->audio_track;
+            $track_path = Paths::PLAYLIST_PATH . $track->file;
             if (Storage::has($track_path)) {
                 Storage::delete($track_path);
             }
 
             $track->delete();
-            $message = "Delete Comnpleted!";
+            $message = "Delete Completed!";
             return response()->json(["message" => $message], 200);
 
         } catch (Exception $error) {

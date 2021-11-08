@@ -31,6 +31,26 @@
     * {
     box-sizing: border-box;
     }
+
+
+    .has-spinner .fa-spinner {
+    opacity: 0;
+    max-width: 0;
+
+    -webkit-transition: opacity 0.25s, max-width 0.45s; 
+    -moz-transition: opacity 0.25s, max-width 0.45s;
+    -o-transition: opacity 0.25s, max-width 0.45s;
+    transition: opacity 0.25s, max-width 0.45s; 
+    }
+
+    .has-spinner.active {
+    cursor:progress;
+    }
+
+.has-spinner.active .fa-spinner {
+  opacity: 1;
+  max-width: 50px; 
+}
 </style>
 
 @endsection
@@ -125,11 +145,14 @@
                         
                     </div>
                     <div class="modal-footer">
-                        <button type="button" @click="sendAudio()"  class="btn btn-primary px-4 py-2">Proceed</button>
+                        <button v-if="!isLoading" type="button" @click="sendAudio()"  class="btn btn-primary px-4 py-2">Proceed</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <div v-if="isLoading" class="spinner-border text-info" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
+                        <!-- <div v-if="isLoading"> -->
+                            <a v-if="isLoading" class="btn btn-success has-spinner" style="width:75px">
+                                Loading...
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </a>
+                        <!-- </div>   -->
                     </div>
                 </div>
             </div>
@@ -172,7 +195,7 @@
         <textarea name="" style="display:none;" id="playlists" cols="30" rows="10">{{ json_encode($playlist) }}</textarea>
         <textarea name="" style="display:none;" id="createAudio" cols="30" rows="10">{{ route('user.audio.upload') }}</textarea>
         <textarea name="" style="display:none;" id="updateAudio" cols="30" rows="10">{{ route('user.audio.update') }}</textarea>
-        <textarea name="" style="display:none;" id="deletePlaylist" cols="30" rows="10">{{ route('users.delete-track') }}</textarea>
+        <textarea name="" style="display:none;" id="delete" cols="30" rows="10">{{ route('users.delete-track') }}</textarea>
         <textarea name="" style="display:none;" id="download" cols="30" rows="10">{{ route('users.downlad.track') }}</textarea>
    </div>
   
@@ -188,4 +211,13 @@
     <script src="{{ asset('js/app/upload.js')}}"></script>
 	<script src="{{ asset('plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('plugins/tagsinput/jquery.tagsinput.min.js') }}" type="text/javascript"></script>
+
+    <script>
+
+        $(function(){
+            $('a.has-spinner, button.has-spinner').click(function() {
+                $(this).toggleClass('active');
+            });
+        });
+    </script>
 @endsection

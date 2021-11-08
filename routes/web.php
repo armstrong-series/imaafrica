@@ -240,7 +240,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/audios', 'MediaIntegration\AudioController@getAudioPlaylist')->name('user.audio');
 	Route::post('/audio/upload', 'MediaIntegration\AudioController@audioPlaylistHandler')->name('user.audio.upload');
 	Route::post('/audio/update/details', 'MediaIntegration\AudioController@updateTrackDetails')->name('user.audio.update');
-	Route::delete('/delete-track', 'MediaIntegration\AudioController@deleteTrack')->name('users.delete-track');
+	Route::post('/delete-track', 'MediaIntegration\AudioController@deleteTrack')->name('users.delete-track');
 	Route::get('/audio/download/{file?}', 'MediaIntegration\AudioController@downloadAudioTrack')->name('users.downlad.track');
 	// Report Photo
 	Route::post('report/photo','ImagesController@report');
