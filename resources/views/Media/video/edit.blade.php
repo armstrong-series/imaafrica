@@ -16,13 +16,12 @@
 @endsection
 @section('content')
 
-<main id="video-edit">
+<main id="media">
     <div class="vid-main-wrapper clearfix">
     <!-- THE YOUTUBE PLAYER -->
         <div class="vid-container">
             <video id="video-player" class="position-absolute h-100 w-100 d-flex align-items-center justify-content-center" style="border-radius: inherit;top: 0;left: 0;width: 100%;" playsinline controls poster="{{$video->video_thumbnail_path}}" loop >
-             <source src="{{$video->video_path}}" type="video/mp4">
-            <source src="{{$video->video_path}}" type="video/webm">
+             <source src="{{$video->video_path}}" type="video/mp4">     
         </div>
 
         <!-- THE PLAYLIST -->
@@ -42,9 +41,9 @@
 </main>
 @endsection
 
-<textarea name="" id="updateVideo"  style="display:none;" cols="30" rows="10"></textarea>
-@section('javascript') 
+<textarea name="" id="editVideoDetails"  style="display:none;" cols="30" rows="10">{{ json_encode($video) }}</textarea>
 
+@section('javascript') 
     <script src="{{ asset('js/app/video.js')}}"></script>
 	<script src="{{ asset('plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('plugins/tagsinput/jquery.tagsinput.min.js') }}" type="text/javascript"></script>

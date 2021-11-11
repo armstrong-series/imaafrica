@@ -53,7 +53,8 @@ class AudioController extends Controller
                 $track_path = storage_path('app/' . Paths::PLAYLIST_PATH);
                 $extension = $request->file('audio_track')->getClientOriginalExtension();
                 if (in_array(strtolower($extension), ["mp3", "wav", "aac"])) {
-                    $fileName = time() . '.' . $extension;
+                    // $fileName = time() . '.' . $extension;
+                    $fileName = (string) "IMAAFRICA" . time() . '.' . $extension;
                     $request->file('audio_track')->move($track_path, $fileName);
                     $track = new AudioModel();
                     $track->user_id = Auth::id();
@@ -231,7 +232,7 @@ class AudioController extends Controller
     public function downloadAudioTrack($file){
 
         $file_path = storage_path('app/' . Paths::PLAYLIST_PATH . $file);
-        $header = ['Content-Type' => 'audio/*'];
+        $header = ['Content-Type' => 'audio/mpeg'];
     
         return response()->download($file_path, $file, $header);
     }

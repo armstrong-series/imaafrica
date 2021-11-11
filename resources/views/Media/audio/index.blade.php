@@ -47,10 +47,10 @@
     cursor:progress;
     }
 
-.has-spinner.active .fa-spinner {
-  opacity: 1;
-  max-width: 50px; 
-}
+    .has-spinner.active .fa-spinner {
+    opacity: 1;
+    max-width: 50px; 
+    }
 </style>
 
 @endsection
@@ -58,7 +58,23 @@
 @section('content')
 
 <main id="playListTrack">
-    <header class="mb-4 d-flex align-items-center justify-content-between">
+
+
+
+    <div class="input-group input-group-lg searchBar">
+        <input type="text" class="form-control" v-model="filterTracks" @keyup="searchTrack()" id="btnItems" placeholder="Search Audios By Category...">
+        <div  v-for="result in results" class="list-group" style="width:800px; border-radius:9px; box-shadow: 4px 4px 4px grey;">
+            <a href="javascript:void(0);" class="list-group-item" style="color: gray;">
+            <strong v-cloak>@{{ result.name }}</a>
+        </div>
+        <!-- <span class="input-group-btn">
+            <button class="btn btn-main btn-flat" type="submit" id="btnSearch">
+                <i class="glyphicon glyphicon-search"></i>
+            </button>
+        </span> -->
+    </div>
+          
+    <header class="mb-4 d-flex align-items-center justify-content-between"></header>
      <div>
         <div class="container margin-bottom-40 padding-top-40">
             <button data-target="#audioUpload" title="Add a track" style="padding:8px;" data-toggle="modal" class="btn btn-primary">
@@ -91,15 +107,13 @@
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-th-large"></i> 
                                 </button>
-                                <ul class="dropdown-menu">
-                                    
-                                    <!-- <li><a href="javascript:void(0)" >Clone Track</a></li> -->
+                                <ul class="dropdown-menu">                      
                                     <li role="separator" class="divider"></li>
                                     <li><a href="javascript:void(0)"  data-target="#changeTrack" >Change File</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="javascript:void(0)" @click="showDialogInfo(index)" data-toggle="modal"  data-target="#edit-track">Edit Details </a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="javascript:void(0)" @click="downloadTrack(audio.file)" title="Download" class="alert-link">Download file</li>
+                                    <li><a href="javascript:void(0)" @click="downloadTrack(audio.file)" title="Download" class="alert-link">Download</li>
                                     <li><a href="javascript:void(0)" @click="deletePlaylist(index)" class="alert-link">Delete</a></li>
                                 </ul>
                             </div>
@@ -196,7 +210,7 @@
         <textarea name="" style="display:none;" id="createAudio" cols="30" rows="10">{{ route('user.audio.upload') }}</textarea>
         <textarea name="" style="display:none;" id="updateAudio" cols="30" rows="10">{{ route('user.audio.update') }}</textarea>
         <textarea name="" style="display:none;" id="delete" cols="30" rows="10">{{ route('users.delete-track') }}</textarea>
-        <textarea name="" style="display:none;" id="download" cols="30" rows="10">{{ route('users.downlad.track') }}</textarea>
+        <textarea name="" style="display:none;" id="download" cols="30" rows="10">{{ route('users.download.track') }}</textarea>
    </div>
   
 </main>

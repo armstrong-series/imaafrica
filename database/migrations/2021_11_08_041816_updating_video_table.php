@@ -14,8 +14,8 @@ class UpdatingVideoTable extends Migration
     public function up()
     {
         Schema::table('video', function (Blueprint $table) {
-            $table->string('watermark')->nullable();
-            $table->string('thumbnail')->nullable();
+            $table->string('video_watermark')->nullable();
+            $table->string('video_thumbnail')->nullable();
         });
     }
 
@@ -27,7 +27,10 @@ class UpdatingVideoTable extends Migration
     public function down()
     {
         Schema::table('video', function (Blueprint $table) {
-            //
+            $table->dropColumn('video_watermark');
+            $table->dropColumn('video_thumbnail');
         });
+
+       
     }
 }

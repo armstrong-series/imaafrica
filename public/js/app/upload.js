@@ -56,15 +56,18 @@ if (window.Vue) {
             previewAudio() {
                 let audio = document.getElementById('audio-preview');
                 let reader = new FileReader();
-
                 reader.readAsDataURL(this.file);
                 reader.addEventListener('load', function () {
                     audio.src = reader.result;
                 });
             },
 
+            clearImage() {
+                this.file = null;
+                // this.input = null;
+            },
+
             handleFileUpload(event) {
-                console.log('audio....', this.file)
                 this.file = event.target.files[0];
                 this.previewAudio();
             },
@@ -81,7 +84,7 @@ if (window.Vue) {
 
             searchTrack() {
                 this.results = this.filterTracks.trim() == '' ? [] :
-                this.audios.filter(each => each.name.toLowerCase().includes(this.filterTracks.toLowerCase()))
+                this.audios.filter(each => each.category.toLowerCase().includes(this.filterTracks.toLowerCase()))
             },
 
             updateTrackDetails() {
@@ -253,8 +256,8 @@ if (window.Vue) {
             },
 
             downloadTrack(file) {
-                axios.get(this.url.audio.download + file, { responseType: 'arraybuffer' }).then(response => {
-                    let track = new Blob([response.data], { type: 'audio/*' })
+                axios.get('/audio/download/' + file, { responseType: 'arraybuffer' }).then(response => {
+                    let track = new Blob([response.data], { type: 'audio/mpeg' })
                     const link = document.createElement('a')
                     link.href = window.URL.createObjectURL(track)
                     link.download = file

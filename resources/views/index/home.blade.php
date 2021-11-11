@@ -8,15 +8,15 @@
         <p class="subtitle-site vivify fadeInBottom delay-600"><strong>{{$settings->welcome_subtitle}}</strong></p>
 
 
-        <form role="search" autocomplete="off" action="{{ url('search') }}" method="get">
-			  <div class="input-group input-group-lg searchBar">
-                    <input type="text" class="form-control" name="q" id="btnItems" placeholder="{{trans('misc.title_search_bar')}}">
-                    <span class="input-group-btn">
-                      <button class="btn btn-main btn-flat" type="submit" id="btnSearch">
-                      	<i class="glyphicon glyphicon-search"></i>
-                      </button>
-                    </span>
-                  </div>
+       		 	<form role="search" autocomplete="off" action="{{ url('search') }}" method="get">
+					<div class="input-group input-group-lg searchBar">
+						<input type="text" class="form-control" name="q" id="btnItems" placeholder="{{trans('misc.title_search_bar')}}">
+						<span class="input-group-btn">
+						<button class="btn btn-main btn-flat" type="submit" id="btnSearch">
+							<i class="glyphicon glyphicon-search"></i>
+						</button>
+						</span>
+					</div>
                   </form>
 
                   @if($categoryPopular)

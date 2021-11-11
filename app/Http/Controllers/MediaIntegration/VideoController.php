@@ -27,11 +27,11 @@ class VideoController extends Controller
 
 public function videos(){
     try {
-        $videos = VideoModel::all();
-        $countVideo = count($videos);
+        $video = VideoModel::all();
+        $countVideo = count($video);
         $data = [
             "page" => "videos",
-            "videos" => $videos, 
+            "video" => $video, 
             
         ];
         return view('Media.video.index', $data);
@@ -49,49 +49,72 @@ public function videoUploadHandler(Request $request){
     try {
 
         // dd($request->all());
-        if($request->hasFile('video')){
-            $name = request()->file('video')->getClientOriginalName();
-            // if($name == "blob"){
-            //     $name = 'video_rec'.time().'.webm';
-            // }
-            $video = new VideoModel();
-            $video->user_id = Auth::id();
-            // $video->user_id = Auth::id();
-            $video->uuid = \Str::uuid();
-            $video->file = $this->storeVideo('video');
-            $video->name = $name;
-            $video->save();
-            // $createGif = $this->generateVideoGif($video);
-            
-            // if($createGif['status'] == true){
-            //     $video->video_gif = $createGif['gif'];
-            //     $video->save();
-            // }
 
-            // $image = asset("img/imaafica.png");
-            // $videoWatermark = $this->generateWatermark($video, $name, $image);
-            // if($videoWatermark['status'] == true){
-            //     $video->video_watermark =  $videoWatermark['watermark'];
-            //     $video->save();
-            // }
-            return response([
-                "status" => "success",
-                "message" => "Upload Successful!",
-                "url" => route('user.video.edit', $video->uuid)
-            ], 200);
-
+        if (!$request->file('video')) {
+            $message = "Add a Video !";
+            return response()->json(['message' => $message], 400);
         }
+
+        if($request->hasFile("video")){
+            $video_path = storage_path('app/' . Paths::VIDEO_PATH);
+            $extension = $request->file('video')->getClientOriginalExtension();
+
+            if (in_array(strtolower($extension), ["mp4", "mov", "webm"])) {
+                $fileName = (string) "IMAAFRICA--" . time() . '.' . $extension;
+                $request->file('video')->move($video_path, $fileName);
+                $video = new VideoModel();
+                $video->user_id = Auth::id();
+                $video->file =  $fileName;
+                $video->uuid = \Str::uuid();
+                $video->save();
+
+                // $createGif = $this->generateVideoGif($video);
+
+                // if($createGif['status'] == true){
+                //     $video->video_gif = $createGif['gif'];
+                //     $video->save();
+                // }
+
+                // $watermark = asset("img/imaafica.png");
+                // $videoWatermark = $this->generateVideoWatermark($video, $extension, $watermark);
+                // if($videoWatermark['status'] == true){
+                //     $video->video_watermark =  $videoWatermark['watermark'];
+                //     $video->save();
+                // }
+               
+                $message = "Upload Successful!";
+                
+                return response()->json([
+                    "message" => $message,
+                    "video" => $video,
+                    //  "url" => route('user.video.edit', $video->uuid)
+                    ], 200);
+
+            }
+            
+            else {
+                $message = "Invalid file format!";
+                return response()->json(['message' => $message], 400);
+             }
+             
+            }
+       
     } catch (Exception $error) {
+        // dd($error);
         Log::info('MediaIntegration\VideoController@videoUploadHandler error message: ' . $error->getMessage());
         $message = "Unable to Upload video";
-        return $message;
+        // return $error;
+        return response()->json([
+            "message" => $message,
+            "error" => $error,
+            ],500);
     }
 
 }
 
 
 
-private function generateWatermark($videoSource, $extension, $watermark = "")
+private function generateVideoWatermark($videoSource, $extension, $watermark = "")
 {
     $ffmpeg = FFMpeg\FFMpeg::create();
     $video = $ffmpeg->open($videoSource);
@@ -99,9 +122,10 @@ private function generateWatermark($videoSource, $extension, $watermark = "")
 
     if (!empty($watermark)){
         $video->filters()->watermark($watermark, array(
-                    'position' => 'relative',
-                    'top' => 25,
-                    'right' => 50,));
+            'position' => 'relative',
+            'top' => 25,
+            'right' => 50,
+        ));
     }
 
     $format-> setKiloBitrate(1000)-> setAudioChannels(2)
@@ -109,7 +133,7 @@ private function generateWatermark($videoSource, $extension, $watermark = "")
 
     $randomFileName = "Imaafrica-watermark".rand().".$extension";
     $image_path = Storage::path(Paths::VIDEO_WATERMARK_PATH  . $randomFileName);
-    $video->save($format, $$image_path);
+    $video->save($format, $image_path);
    
     // if (file_exists($image_path))
     //     return "http://localhost/test/video/$randomFileName";
@@ -143,6 +167,37 @@ public function updateVideoDetails(Request $request){
     }
 }
 
+
+
+
+public function deleteVideo(Request $request)
+{
+    try {
+
+        $video = VideoModel::where('id', $request->video_id)->first();
+        if (!$video) {
+            $message = "Unknown Video!";
+            return response()->json(['message' => $message], 404);
+        }
+        $video_path = Paths::VIDEO_PATH . $video->file;
+        if (Storage::has($video_path)) {
+            Storage::delete($video_path);
+        }
+
+        $video->delete();
+        $message = "Delete Completed!";
+        return response()->json(["message" => $message], 200);
+
+    } catch (Exception $error) {
+        Log::info('MediaIntegration\VideoController@deleteVideo error message: ' . $error->getMessage());
+        $message = 'Sorry, unable to create template. Please try again';
+        return response()->json([
+            'error' => true,
+            "message" => $message,
+        ], 500);
+    }
+}
+
 public function editVideo($videouuid){
     try {
 
@@ -156,10 +211,10 @@ public function editVideo($videouuid){
             "sub" =>  "videos",
             "video" => $video
         ];
-        return view('App.Video.edit', $data);
+        return view('Media.video.edit', $data);
 
     } catch (Exception $error) {
-        Log::info('VideoController@editVideo error message: ' . $error->getMessage());
+        Log::info('MediaIntegration\VideoController@editVideo error message: ' . $error->getMessage());
         $message = 'Unable to get Resource. Encountered an error.';
         return $message;
     }

@@ -66,26 +66,29 @@
             <h3 class="mb-0">Videos</h3>
             <button data-target="#videoUpload"  data-toggle="modal" class="btn btn-primary px-4 py-2">Create New</button>
         </header>
-        <div class="container margin-bottom-40 padding-top-40">
-            <div class="row">
-                <div class="col-md-4">
+        <div class="container margin-bottom-40 padding-top-40"  >
+            <div class="row" >
+                <div class="col-md-4" v-for="(video, index) in videos">
                     <div class="card"  style="width: 23rem; box-shadow: 2px 3px 3px grey;">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" role="img"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"/><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>
+                       
                         <div class="card-body">
-                            <h5 class="card-title">Video Name</h5>
+                            <video v-cloak width="300" height="220" controls>
+                                <source :src="'/storage/videos/' + video.file">  
+                            </video>
+                            <h5 v-cloak class="card-title">@{{ video.name }}</h5>
                             <div class="btn-group">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-th-large"></i> 
-                                    </button>
-                                    <ul class="dropdown-menu">   
-                                        <li><a href="javascript:void(0)">View</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="javascript:void(0)" data-toggle="modal">Edit </a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="javascript:void(0)"  title="Download" class="alert-link">Download</li>
-                                        <li><a href="javascript:void(0)"  class="alert-link">Delete</a></li>
-                                    </ul>
-                                </div>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-th-large"></i> 
+                                </button>
+                                <ul class="dropdown-menu">   
+                                    <li><a href="javascript:void(0)">View</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="javascript:void(0)" data-toggle="modal">Edit </a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="javascript:void(0)"  title="Download" class="alert-link">Download</li>
+                                    <li><a href="javascript:void(0)" @click="deleteVideo(index)" class="alert-link">Delete</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -109,15 +112,15 @@
                     <section class="text-center">
                         <div class="d-flex flex-column justify-content-center" style="height: 300px;">
                             <!-- <header>
-                            <h3 class="mb-4 font-weight-light">File Upload</h3>
-                            <p>Upload your video here</p>
+                                <h3 class="mb-4 font-weight-light">File Upload</h3>
+                                <p>Upload your video here</p>
                             </header> -->
 
                             <div class="mx-auto mt-5 w-75 " >
-                            <div class="fallback dropzone dz-clickable" @dragover="dragover" @dragleave="dragleave" @drop="drop"
+                            <div class="fallback dropzone dz-clickable" @dragover="dragover" @dragleave="dragleave"  @drop="drop"
                             style="height: 300px; cursor: pointer; background: #F9F9F9; border: 2px dashed #066CF2;"> 
-                                <input type="file" @change="onChange" ref="file" accept=".mp4,.mov"
-                                name="fields[assetsFieldHandle][]" id="assetsFieldHandle">
+                                <input type="file" @change="onChange()" ref="file" accept="video/*"
+                                name="" id="assetsFieldHandle">
 
 
                                 <label  for="assetsFieldHandle"  class="dz-default dz-message needsclick p-5 d-block d-flex flex-column justify-content-center">
@@ -130,12 +133,13 @@
                                         </svg>
                                     </div>
                                     <p class="font-weight-light lead ">DRAG N DROP VIDEO FILE </p>
-                                    <span class="underline needsclick text-primary">Browse from your computer</span>
-                            </label> 
+                                    <span class="underline needsclick text-primary">Browse from your computer  </span>
+                                </label> 
                             
-                                <ul class="mt-4" v-if="this.filelist.length" v-cloak>
-                                    <li class="text-sm p-1" v-for="file in filelist">
-                                        @{{ file.name }}<button class="ml-2 btn-md btn-danger" type="button" @click="remove(filelist.indexOf(file))" title="Remove file">remove</button>
+                                <ul class="mt-4" v-cloak>
+                                    <li class="text-sm p-1">
+                                        @{{ videoFile.name }}        
+                                        <button v-if="videoFile" class="ml-2 btn-md btn-danger" type="button" @click.stop="remove()" title="Remove file">remove</button>
                                     </li>
                                 </ul>
                             </div>   
@@ -156,7 +160,10 @@
             </div>
         </div>
     </div>
+    <textarea name="" id="videos"  style="display:none;" cols="30" rows="10">{{ json_encode($video) }}</textarea>
+   
     <textarea name="" id="uploadVideo"  style="display:none;" cols="30" rows="10">{{ route('users.videos.upload')}}</textarea>
+    <textarea name="" id="deletVideo"  style="display:none;" cols="30" rows="10">{{ route('users.video.delete')}}</textarea>
 </main>
 @endsection
 
