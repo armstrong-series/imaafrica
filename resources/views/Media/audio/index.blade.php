@@ -160,7 +160,7 @@
                     </div>
                     <div class="modal-footer">
                         <button v-if="!isLoading" type="button" @click="sendAudio()"  class="btn btn-primary px-4 py-2">Proceed</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button  v-if="!isLoading" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <!-- <div v-if="isLoading"> -->
                             <a v-if="isLoading" class="btn btn-success has-spinner" style="width:75px">
                                 Loading...

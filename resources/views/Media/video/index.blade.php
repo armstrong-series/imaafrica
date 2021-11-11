@@ -10,40 +10,27 @@
 
 @section('styles')
 <style>
-    .fileUpload {
-      position: relative;
-      overflow: hidden;
-      margin: 10px;
-      }
-    .fileUpload input.upload {
-      position: absolute;
-      top: 0;
-      right: 0;
-      margin: 0;
-      padding: 0;
-      font-size: 20px;
-      cursor: pointer;
-      opacity: 0;
-      filter: alpha(opacity=0);
-    }
-    * {
-    box-sizing: border-box;
+    
+    
+    .has-spinner .fa-spinner {
+    opacity: 0;
+    max-width: 0;
+
+    -webkit-transition: opacity 0.25s, max-width 0.45s; 
+    -moz-transition: opacity 0.25s, max-width 0.45s;
+    -o-transition: opacity 0.25s, max-width 0.45s;
+    transition: opacity 0.25s, max-width 0.45s; 
     }
 
-    img.np-preview {
-        background-color: #fff;
-        border: 1px solid #ddd;
-        padding: 5px;
-        height: 230px;
-        width: 400px;
-        margin: 10px;
-      }
+    .has-spinner.active {
+    cursor:progress;
+    }
 
-      fa-stop-circle{
-        font-size:40px;
-        color: rgb(227, 0, 51);
-        cursor: pointer;
-      }
+    .has-spinner.active .fa-spinner {
+    opacity: 1;
+    max-width: 50px; 
+    }
+
       .simple-icon-reload{
         font-size:30px;
         color: gray;
@@ -68,7 +55,7 @@
         </header>
         <div class="container margin-bottom-40 padding-top-40"  >
             <div class="row" >
-                <div class="col-md-4" v-for="(video, index) in videos">
+                <div class="col-md-4" v-for="(video, index) in videos"  style="padding:8px;">
                     <div class="card"  style="width: 23rem; box-shadow: 2px 3px 3px grey;">
                        
                         <div class="card-body">
@@ -151,11 +138,15 @@
                 <!-- end of file upload -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" @click="uploadVideo()" class="btn btn-primary px-4 py-2">Proceed</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <div v-if="isLoading" class="spinner-border text-info" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
+                    <button v-if="!isLoading" type="button" @click="uploadVideo()" class="btn btn-primary px-4 py-2">Proceed</button>
+                    <button  v-if="!isLoading" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    
+                    <a v-if="isLoading" class="btn btn-info has-spinner" style="width:75px">
+                        Loading...
+                        <i class="fa fa-spinner fa-spin"></i>
+                    </a>
+            
+
                 </div>
             </div>
         </div>
