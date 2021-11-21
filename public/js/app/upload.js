@@ -7,11 +7,13 @@ if (window.Vue) {
 
             audio: {
                 name: "",
+                title: "",
                 category: "",
                 file: ""
             },
             audioEdit: {
                 name: "",
+                title: "",
                 category: "",
 
             },
@@ -26,6 +28,12 @@ if (window.Vue) {
 
 
             filterTracks: '',
+
+            originalFile: '',
+            imageFile: null,
+            input: null,
+            isImageUploading: false,
+
 
             url: {
                 audio: {
@@ -63,9 +71,25 @@ if (window.Vue) {
             },
 
             clearImage() {
-                this.file = null;
-                // this.input = null;
+                this.imageFile = null;
+                this.input = null;
             },
+
+
+            audioCoverPreview(event) {
+               
+                this.input = event.target;
+                if (this.input.files && this.input.files[0]) {
+                    this.originalFile = this.input.files[0]
+                    let reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.imageFile = e.target.result;
+                    };
+    
+                    reader.readAsDataURL(this.input.files[0]);
+                }
+            },
+    
 
             handleFileUpload(event) {
                 this.file = event.target.files[0];
@@ -133,16 +157,15 @@ if (window.Vue) {
                         });
                         this.isLoading = false;
 
-
-
                     });
             },
 
             sendAudio() {
                 this.isLoading = true;
                 const formData = new FormData();
-                formData.append('audio_track', this.file)
-                formData.append('name', this.audio.name);
+                formData.append('audio_track', this.file);
+                formData.append('img_cover', this.originalFile)
+                formData.append('title', this.audio.title);
                 formData.append('category', this.audio.category);
                 formData.append('_token', $('input[name=_token]').val());
                 axios.post(this.url.audio.create, formData, {

@@ -15,14 +15,15 @@ use Validator;
 
 class AudioController extends Controller
 {
-    public function getAudioPlaylist(){
+    public function getAudioPlaylist(Request $request){
         try {
             $playlist = AudioModel::all();
-            $countPlaylist = count($playlist);
+            // $playlist = AudioModel::select('name', 'file', 'category')->where('id', $request->id)->get();
+     
             $data = [
                 "page" => "audios",
                 "playlist" => $playlist, 
-                "countPlaylist" => $countPlaylist
+            
             ];
             return view('Media.audio.index', $data);
             
@@ -37,6 +38,8 @@ class AudioController extends Controller
     public function audioPlaylistHandler(Request $request){
         try {
 
+                // dd($request->all());
+
                  if (!$request->file('audio_track')) {
                     $message = "Add a Track !";
                     return response()->json(['message' => $message], 400);
@@ -49,24 +52,34 @@ class AudioController extends Controller
                 }
                 
            
-            if($request->hasFile("audio_track")){
+            if($request->hasFile("audio_track") || $request->hasFile("img_cover")){
                 $track_path = storage_path('app/' . Paths::PLAYLIST_PATH);
-                $extension = $request->file('audio_track')->getClientOriginalExtension();
-                if (in_array(strtolower($extension), ["mp3", "wav", "aac"])) {
-                    // $fileName = time() . '.' . $extension;
+                $imgCover = storage_path('app/' . Paths::COVER);
+                $coverExtension = $request->file('audio_track')->getClientOriginalExtension();
+                $extension = $request->file('img_cover')->getClientOriginalExtension();
+                if (in_array(strtolower($extension), ["mp3", "wav", "aac"])
+                     || in_array(strtolower($coverExtension),  ["png", "jpg", "jpeg"])) {
+                    
                     $fileName = (string) "IMAAFRICA" . time() . '.' . $extension;
+                    $imageCoverName = (string) "Music-Cover" . time() . '.' . $coverExtension;
                     $request->file('audio_track')->move($track_path, $fileName);
+                    $request->file('img_cover')->move($imgCover, $imageCoverName);
+
+                    
                     $track = new AudioModel();
                     $track->user_id = Auth::id();
                     $track->file =  $fileName;
+                    $track->img_cover =  $imageCoverName;
                     $track->category = $request->category;
                     $track->uuid = \Str::uuid();
-                    $track->name = $request->name;
+                    // $track->name = $request->name;
+                    $track->title = $request->title;
                     $track->save();
                     $message = "Request Completed!";
                     return response()->json(["message" => $message,"track" => $track], 200);
 
-                }else {
+                }
+                else {
                     $message = "Invalid file format!";
                     return response()->json(['message' => $message], 400);
                  }
@@ -105,7 +118,7 @@ class AudioController extends Controller
             $track->name = $request->name ?  $request->name : $track->name;
             $track->category = $request->category  ?  $request->category  : $track->category;
             $track->save();
-            $message = "Track update successful";
+            $message = "Track update successful!";
             return response()->json(["message" => $message, "track" => $track], 200);
 
         } catch (Exception $error) {
@@ -122,8 +135,6 @@ class AudioController extends Controller
     public function deleteTrack(Request $request)
     {
         try {
-
-            // dd($request->all());
             $track = AudioModel::where('id', $request->audio_id)->first();
             if (!$track) {
                 $message = "Unknown Playlist!";

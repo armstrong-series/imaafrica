@@ -63,7 +63,7 @@ if ( Auth::check() ) {
 					</li>
 						  
 					<li>
-						<a href="{{ route('users.videos') }}" class="font-default text-uppercase">
+						<a href="{{ route('users.videos') }}" class="font-default text-uppercase {{ $page ?? '' == 'videos' ? 'active' : '' }}">
 						Video
 						</a>
 					</li>
