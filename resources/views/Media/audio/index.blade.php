@@ -240,13 +240,14 @@
                                 </div>
                              
                                <audio id="audio" :src="'/storage/audios/' + audio.file"></audio>
-                               <div class="img-container" v-if="audio.img_cover">
-                                    <img v-cloak id="music-cover" width="20" height="20" :src="'/storage/audio/cover' + audio.img_cover" alt="">
+                               <div class="img-container">
+                                    <img v-cloak id="cover" width="20" height="20" src="{{ asset('img/disc.png')}}" alt="">
+                                    <!-- <img v-cloak id="cover" width="20" height="20" :src="'/storage/audio/cover' + audio.img_cover" alt=""> -->
                                </div>
                                <div class="navigation">
-                                   <!-- <button id="prev" class="action-btn"><i class="fas fa-backward"></i></button> -->
+                                   <button id="prev" class="action-btn"><i class="fas fa-backward"></i></button>
                                    <button id="play" class="action-btn action-btn-big"><i class="fas fa-play"></i></button>
-                                   <!-- <button id="next" class="action-btn"><i class="fas fa-forward"></i></button> -->
+                                   <button id="next" class="action-btn"><i class="fas fa-forward"></i></button>
                                </div>
                             </div>
                         </td>
@@ -403,7 +404,7 @@
       const prevBtn =  document.getElementById("prev");
       const nextBtn =  document.getElementById("next");
       const audio =  document.getElementById("audio");
-
+      
       const title =  document.getElementById("title");
 
 
