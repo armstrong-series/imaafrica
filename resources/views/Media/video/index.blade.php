@@ -56,7 +56,7 @@
         <div class="container margin-bottom-40 padding-top-40"  >
             <div class="row" >
                 <div class="col-md-4" v-for="(video, index) in videos"  style="padding:8px;">
-                    <div class="card"  style="width: 23rem; box-shadow: 2px 3px 3px grey;">
+                    <div class="card"  style="width: 300px; box-shadow: 2px 3px 3px grey;">
                        
                         <div class="card-body">
                             <video v-cloak width="300" height="220" controls>
@@ -72,7 +72,7 @@
                                     <li role="separator" class="divider"></li>
                                     <li><a href="javascript:void(0)" data-toggle="modal">Edit </a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="javascript:void(0)"  title="Download" class="alert-link">Download</li>
+                                    <li><a href="javascript:void(0)" @click="downloadVideo(video.file)"  title="Download" class="alert-link">Download</li>
                                     <li><a href="javascript:void(0)" @click="deleteVideo(index)" class="alert-link">Delete</a></li>
                                 </ul>
                             </div>

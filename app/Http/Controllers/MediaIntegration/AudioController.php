@@ -55,8 +55,8 @@ class AudioController extends Controller
             if($request->hasFile("audio_track") || $request->hasFile("img_cover")){
                 $track_path = storage_path('app/' . Paths::PLAYLIST_PATH);
                 $imgCover = storage_path('app/' . Paths::COVER);
-                $coverExtension = $request->file('audio_track')->getClientOriginalExtension();
-                $extension = $request->file('img_cover')->getClientOriginalExtension();
+                $coverExtension = $request->file('img_cover')->getClientOriginalExtension();
+                $extension = $request->file('audio_track')->getClientOriginalExtension();
                 if (in_array(strtolower($extension), ["mp3", "wav", "aac"])
                      || in_array(strtolower($coverExtension),  ["png", "jpg", "jpeg"])) {
                     
@@ -110,12 +110,12 @@ class AudioController extends Controller
         try {
 
             $track = AudioModel::where('id', $request->id)->where('user_id', Auth::id())->first();
-            if (!$track ) {
+            if (!$track) {
                 $message = "Track not found!";
                 return response()->json(['message' => $message], 404);
             }
 
-            $track->name = $request->name ?  $request->name : $track->name;
+            $track->name = $request->title ?  $request->title : $track->title;
             $track->category = $request->category  ?  $request->category  : $track->category;
             $track->save();
             $message = "Track update successful!";

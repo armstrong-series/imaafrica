@@ -223,7 +223,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Track</th>
-                        <th scope="col">Name</th>
+                        <th scope="col">Title</th>
                         <th scope="col">Category</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -231,7 +231,7 @@
                 <tbody>
                     <tr v-for="(audio, index) in audios">
                         <td v-cloak>
-                            <div class="music-container" id="music-container">
+                            <div class="music-container" id="music-coantainer">
                                 <div class="music-info">
                                     <h4 id="title">@{{ audio.name }}</h4>
                                   <div class="progress-container" id="progresscontainer">
@@ -241,17 +241,17 @@
                              
                                <audio id="audio" :src="'/storage/audios/' + audio.file"></audio>
                                <div class="img-container">
-                                    <img v-cloak id="cover" width="20" height="20" src="{{ asset('img/disc.png')}}" alt="">
-                                    <!-- <img v-cloak id="cover" width="20" height="20" :src="'/storage/audio/cover' + audio.img_cover" alt=""> -->
+                                    <!-- <img v-cloak id="cover" width="20" height="20" src="{{ asset('img/disc.png')}}" alt=""> -->
+                                    <img v-cloak id="cover" width="20" height="20" :src="'/storage/audios/cover' + audio.img_cover" alt="">
                                </div>
                                <div class="navigation">
-                                   <button id="prev" class="action-btn"><i class="fas fa-backward"></i></button>
+                                   <!-- <button id="prev" class="action-btn"><i class="fas fa-backward"></i></button> -->
                                    <button id="play" class="action-btn action-btn-big"><i class="fas fa-play"></i></button>
-                                   <button id="next" class="action-btn"><i class="fas fa-forward"></i></button>
+                                   <!-- <button id="next" class="action-btn"><i class="fas fa-forward"></i></button> -->
                                </div>
                             </div>
                         </td>
-                        <td v-cloak>@{{ audio.name }}</td>
+                        <td v-cloak>@{{ audio.title }}</td>
                         <td v-cloak>@{{ audio.category }}</td>
                         <td v-cloak>
                             <!-- Single button -->
@@ -262,7 +262,7 @@
                                 <ul class="dropdown-menu">    
                                     @if(Auth::user())                  
                                         <li role="separator" class="divider"></li>
-                                        <li><a href="javascript:void(0);"  data-target="#changeTrack" >Change File</a></li>
+                                        <li><a href="javascript:void(0);"  data-target="#changeTrack">Change File</a></li>
                                         <li role="separator" class="divider"></li>
                                         <li><a href="javascript:void(0);" @click="showDialogInfo(index)" data-toggle="modal"  data-target="#edit-track">Edit Details </a></li>
                                         <li role="separator" class="divider"></li>
@@ -358,7 +358,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                         <label for="">Title</label>
-                        <input type="text" class="form-control" placeholder="Give a name" v-model="audioEdit.name">
+                        <input type="text" class="form-control" placeholder="Give a name" v-model="audioEdit.title">
                         </div>
                         <div class="form-group">
                             <label for="">Category</label>
@@ -414,19 +414,24 @@
 
       function loadSong(song){
          title.innerText = song; 
-        
+         audio.src = `storage/audios/${song}`;
       }
 
-      playBtn.addEventListener('click', () =>{
+      playBtn.addEventListener('click', () => {
           const isPlaying = musicContainer.classList.contains("play");
-          isPlaying ? pauseSong() : playSong();
+        //   isPlaying ? pauseSong() : playSong();
         
+          if(isPlaying){
+            pauseSong();
+          }else{
+            playSong();
+          }
       });
 
       function playSong(){
           musicContainer.classList.add("play");
-          playBtn.querySelector('i.fas').classList.remove("fa-play");
-          playBtn.querySelector('i.fas').classList.add("fa-pause");
+          playBtn.querySelector("i.fas").classList.remove("fa-play");
+          playBtn.querySelector("i.fas").classList.add("fa-pause");
 
           audio.play();
       }
@@ -434,8 +439,8 @@
 
       function pauseSong(){
           musicContainer.classList.add("play");
-          playBtn.querySelector('i.fas').classList.remove("fa-play");
-          playBtn.querySelector('i.fas').classList.add("fa-pause");
+          playBtn.querySelector('i.fas').classList.add("fa-play");
+          playBtn.querySelector('i.fas').classList.remove("fa-pause");
 
           audio.pause();
       }

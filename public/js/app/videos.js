@@ -218,8 +218,8 @@ new Vue({
         },
 
         downloadVideo(file) {
-            axios.get('text-to-translate/download/' + file, { responseType: 'arraybuffer' }).then(response => {
-                let blob = new Blob([response.data], { type: 'text/vtt' })
+            axios.get('/video/download/' + file, { responseType: 'arraybuffer' }).then(response => {
+                let blob = new Blob([response.data], { type: 'video/mp4' })
                 const link = document.createElement('a')
                 link.href = window.URL.createObjectURL(blob)
                 link.download = file

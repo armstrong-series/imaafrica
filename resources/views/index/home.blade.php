@@ -3,7 +3,7 @@
 @section('content')
 <div class="jumbotron index-header jumbotron_set jumbotron-cover @if( Auth::check() ) session-active-cover @endif">
       <div class="container wrap-jumbotron position-relative">
-	  <img src="{{ asset('img/imaafica.png') }}" class="logo " />
+	  <!-- <img src="{{ asset('img/imaafica.png') }}" class="logo " /> -->
         <!-- <h1 class="title-site vivify driveInTop delay-500" id="titleSite">{{$settings->welcome_text}}</h1> -->
         <p class="subtitle-site vivify fadeInBottom delay-600"><strong>{{$settings->welcome_subtitle}}</strong></p>
 

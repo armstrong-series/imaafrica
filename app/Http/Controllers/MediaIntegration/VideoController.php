@@ -17,11 +17,7 @@ use FFMpeg;
 
 class VideoController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
+ 
 
 
 
@@ -224,7 +220,7 @@ public function editVideo($videouuid){
 public function downloadVideo($file){
 
     $file_path = storage_path('app/' . Paths::VIDEO_PATH . $file);
-    $header = ['Content-Type' => 'application/mp4, application/webm'];
+    $header = ['Content-Type' => 'video/*'];
 
     return response()->download($file_path, $file, $header);
 }

@@ -232,6 +232,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 	// Videos
 	Route::get('/videos', 'MediaIntegration\VideoController@videos')->name('users.videos');
+	Route::get('/video/download/{file?}', 'MediaIntegration\VideoController@downloadVideo')->name('users.video.download');
 	Route::get('/upload/videos', 'MediaIntegration\VideoController@uploadPage')->name('videos.upload.page');
 	Route::post('/upload/videos', 'MediaIntegration\VideoController@videoUploadHandler')->name('users.videos.upload');
 	Route::get('/videos/edit/{videouuid}', 'MediaIntegration\VideoController@editVideo')->name('user.video.edit');
