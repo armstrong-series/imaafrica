@@ -18,11 +18,16 @@ use FFMpeg;
 class VideoController extends Controller
 {
  
-
+    public function __construct()
+    {
+   
+        $this->middleware('auth')->except("videos");
+    }
 
 
 public function videos(){
     try {
+       
         $video = VideoModel::all();
         $countVideo = count($video);
         $data = [

@@ -55,7 +55,7 @@ if ( Auth::check() ) {
 							 </a>
 					 	</li>
 					 @endif
-
+				
 					<li>
 						<a href="{{ route('user.audio')}}" class="font-default text-uppercase {{ $page ?? '' == 'audios' ? 'active' : '' }}">
 						  Audio
