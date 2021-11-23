@@ -29,7 +29,7 @@ public function videos(){
     try {
        
         $video = VideoModel::all();
-        $countVideo = count($video);
+       
         $data = [
             "page" => "videos",
             "video" => $video, 
@@ -48,9 +48,6 @@ public function videos(){
 
 public function videoUploadHandler(Request $request){
     try {
-
-        // dd($request->all());
-
         if (!$request->file('video')) {
             $message = "Add a Video !";
             return response()->json(['message' => $message], 400);
@@ -88,7 +85,7 @@ public function videoUploadHandler(Request $request){
                 return response()->json([
                     "message" => $message,
                     "video" => $video,
-                    //  "url" => route('user.video.edit', $video->uuid)
+                     "url" => route('user.video.edit', $video->uuid)
                     ], 200);
 
             }
@@ -112,6 +109,29 @@ public function videoUploadHandler(Request $request){
     }
 
 }
+
+public function editVideo($videouuid){
+    try {
+
+        $video = VideoModel::where('uuid', $videouuid)->first();
+        if (!$video) {
+            $message = 'Video not found!';
+            return response()->json(["message" => $message], 404);
+        }
+        $data = [
+            "page" =>  "videos", 
+            "sub" =>  "videos",
+            "video" => $video
+        ];
+        return view('Media.video.edit', $data);
+
+    } catch (Exception $error) {
+        Log::info('MediaIntegration\VideoController@editVideo error message: ' . $error->getMessage());
+        $message = 'Unable to get Resource. Encountered an error.';
+        return $message;
+    }
+}
+
 
 
 
@@ -147,7 +167,7 @@ private function generateVideoWatermark($videoSource, $extension, $watermark = "
 
 public function updateVideoDetails(Request $request){
     try {
-        $video = VideoModel::where('user_id', Auth::id())->where('id', $request->video_id);
+        $video = VideoModel::where('id', $request->id)->first();
         if(!$video){
             $message = "Video not found!";
             return response()->json(["message" => $message], 404);
@@ -156,8 +176,8 @@ public function updateVideoDetails(Request $request){
         $video->category = $request->category ? $request->category : $video->category;
         $video->contributor = $request->contributor ? $request->contributor : $video->contributor;
         $video->save();
-        $message = "Update Successful!";
-        return response()->json(["message" => $message], 200);
+        $message = "Video Update Successful!";
+        return response()->json(["message" => $message, "video" => $video], 200);
 
        
     } catch (Exception $error) {
@@ -199,27 +219,6 @@ public function deleteVideo(Request $request)
     }
 }
 
-public function editVideo($videouuid){
-    try {
-
-        $video = VideoModel::where('uuid', $videouuid)->first();
-        if (!$video) {
-            $message = 'Video not found!';
-            return response()->json(["message" => $message], 404);
-        }
-        $data = [
-            "page" =>  "videos", 
-            "sub" =>  "videos",
-            "video" => $video
-        ];
-        return view('Media.video.edit', $data);
-
-    } catch (Exception $error) {
-        Log::info('MediaIntegration\VideoController@editVideo error message: ' . $error->getMessage());
-        $message = 'Unable to get Resource. Encountered an error.';
-        return $message;
-    }
-}
 
 
 public function downloadVideo($file){

@@ -14,7 +14,7 @@ new Vue({
         videoFile: "",
 
         videoEdit: {
-            name: "",
+            contributor: "",
             category: "",
             title: ""
         },
@@ -27,7 +27,9 @@ new Vue({
            video:{
                 create: "",
                 update: "",
-                delete: ""
+                delete: "",
+                edit: ``,
+               
            }
         },
 
@@ -36,22 +38,17 @@ new Vue({
 
     mounted() {
         this.videos = JSON.parse($('#videos').val());
+        this.url.video.update = $("#updateDetails").val();
         this.url.video.create = $("#uploadVideo").val();
         this.url.video.delete = $("#deletVideo").val();
-
-        this.videoEdit = $('#editVideoDetails').val() ? {
-            ...this.videoEdit,
-            title: JSON.parse($('#editVideoDetails').val()).name,
-            name: JSON.parse($('#editVideoDetails').val()).title,
-            category: JSON.parse($('#editVideoDetails').val()).category,
-        } : {}
+        this.url.video.edit = $("#edit-video").val() + '/';
+        
+       
     },
 
   
 
     methods: {
-
-        
         onChange() {
            let input = document.getElementById("assetsFieldHandle") 
             this.videoFile = this.$refs.file.files[0];
@@ -119,7 +116,7 @@ new Vue({
                 this.videos.push(Object.assign({}, response.data.video, {}));
                 // let data = response.data;
                 // console.log('response...',response);
-                // window.location.href = response.data.url
+                window.location.href = response.data.url
 
             }).catch((error) => {
                 console('error', error)
@@ -139,6 +136,58 @@ new Vue({
                     }
                 })
             },
+
+            updateVideoDetails(){
+                this.isLoading = true;
+                const formData = new FormData();
+                for (let key in this.videoEdit) {
+                    let value = this.videoEdit[key];
+                    formData.append(key, value);
+                }
+                formData.append('_token', $('input[name=_token]').val());
+    
+                axios.post(this.url.video.update, formData)
+                .then((response) => {
+                    this.isLoading = false;
+                    this.$toastr.Add({
+                        msg: response.data.message, 
+                        clickClose: false, 
+                        timeout: 2000,
+                        position: "toast-top-right", 
+                        type: "success", 
+                        preventDuplicates: true, 
+                        progressbar: false,
+                        style: {backgroundColor: "green"}
+                    });
+                    this.isLoading = false;
+                    var editedVideo = response.data.video;
+                    this.videos = this.audios.map((video) => {
+                        if (video.id === editedVideo.id) {
+                            video = Object.assign({}, editedVideo);
+                        }
+                        return video;
+                    });
+                    window.location.reload();
+                        
+                
+                }).catch((error) => {
+                    this.isLoading = false
+                    if (error.response) {
+                        this.$toastr.Add({
+                            msg: error.response.data.message, 
+                            clickClose: false, 
+                            timeout: 2000,
+                            position: "toast-top-right", 
+                            type: "error", 
+                            preventDuplicates: true, 
+                            progressbar: false,
+                            style: {backgroundColor: "red"}
+                        });
+                        
+                        }
+                    })
+                },
+    
 
 
        deleteVideo(index) {

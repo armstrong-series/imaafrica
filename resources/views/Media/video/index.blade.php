@@ -68,11 +68,12 @@
                                     <i class="fas fa-th-large"></i> 
                                 </button>
                                 <ul class="dropdown-menu">   
-                                    <li><a href="javascript:void(0)">View</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="javascript:void(0)" data-toggle="modal">Edit </a></li>
+                                    <!-- <li><a href="javascript:void(0)">View</a></li> -->
+                                    
+                                    <li><a :href="url.video.edit + video.uuid" data-toggle="modal">Edit </a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="javascript:void(0)" @click="downloadVideo(video.file)"  title="Download" class="alert-link">Download</li>
+                                    <li role="separator" class="divider"></li>
                                     <li><a href="javascript:void(0)" @click="deleteVideo(index)" class="alert-link">Delete</a></li>
                                 </ul>
                             </div>
@@ -152,7 +153,7 @@
         </div>
     </div>
     <textarea name="" id="videos"  style="display:none;" cols="30" rows="10">{{ json_encode($video) }}</textarea>
-   
+    <textarea name="" id="edit-video"  style="display:none;" cols="30" rows="10">{{ route('user.video.edit') }}</textarea>
     <textarea name="" id="uploadVideo"  style="display:none;" cols="30" rows="10">{{ route('users.videos.upload')}}</textarea>
     <textarea name="" id="deletVideo"  style="display:none;" cols="30" rows="10">{{ route('users.video.delete')}}</textarea>
 </main>
@@ -163,7 +164,6 @@
     <script src="{{ asset('library/vue.js') }}"></script>
     <script src="https://unpkg.com/vue-toastr/dist/vue-toastr.umd.min.js"></script>
 	<script src="{{ asset('library/axios.min.js') }}"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.1.1/min/dropzone.min.js"></script> -->
     <script src="{{ asset('js/app/videos.js')}}"></script>  
 	<script src="{{ asset('plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('plugins/tagsinput/jquery.tagsinput.min.js') }}" type="text/javascript"></script>

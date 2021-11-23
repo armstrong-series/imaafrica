@@ -56,16 +56,7 @@
       }
 
 
-    .has-spinner .fa-spinner {
-    opacity: 0;
-    max-width: 0;
-
-    -webkit-transition: opacity 0.25s, max-width 0.45s; 
-    -moz-transition: opacity 0.25s, max-width 0.45s;
-    -o-transition: opacity 0.25s, max-width 0.45s;
-    transition: opacity 0.25s, max-width 0.45s; 
-    }
-
+   
     .has-spinner.active {
     cursor:progress;
     }
@@ -77,116 +68,260 @@
 
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
 
-    .music-container{
-        background-color: #fff;
-        border-radius: 15px;
-        box-shadow: 0 10px 10px 0 grey;
-        display: flex;
-        padding: 10px 20px;
-        position: relative;
-        margin: 100px 0;
-        /* z-index: 10; */
-        width: 400px;
-    }
-    body{
-        font-family: 'Lato', sans-serif;
-    }
-    .img-container{
-       
-        position: relative;
-        width: 110px; 
-    }
-
-    .img-container img {
-        border-radius: 50%;
-        width: inherit;
-        object-fit: cover;
-        height: 110px;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        animation: rotate 3s linear infinite;
-        animation-play-state: paused;
-    }
-    .music-container.play .img-container img{
-        animation-play-state: running;
-    }
     
-    @keyframes rotate {
-        from{
-            transform: rotate(0deg)
-        }
-        to{
-            transform: rotate(360deg)
-        }
-    }
+   
+$player-height: 190px;
+$player-width: 430px;
 
+h1 {
+   font-family: 'Open Sans', sans-serif;
+   font-size: 13pt;
+   font-weight: 600;
+   text-transform: uppercase;
+   color: white;
+   cursor: default;
+}
 
+h4 {
+   font-family: 'Open Sans', sans-serif;
+   font-size: 8pt;
+   font-weight: 400;
+   cursor: default;
+}
 
-    .navigation{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1;
-    }
+h2 {
+   font-family: 'Open Sans', sans-serif;
+   font-size: 13pt;
+   font-weight: 300;
+   color: white;
+   cursor: default;
+}
 
-    .action-btn{
-        background-color: #fff;
-        border: 0;
-        font-size: 20px;
-        color: silver;
-        cursor: pointer;
-        padding: 10px;
-        margin: 0 20px;
-    }
-    .action-btn .action-btn-big{
-        color: #cdc2d0;
-        font-size: 30px;
-    }
-    .action-btn:focus{
-        outline: none;
-    }
+@mixin unselectable() {
+   -webkit-touch-callout: none;
+   -webkit-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
 
-    .music-info{
-        background-color: rgba(255, 255, 255, 0.5);
-        border-radius: 15px 15px 0 0;
-        position: absolute;
-        opacity: 0;
-        width: calc(100% - 40px);
-        padding: 10px 10px 10px 150px;
-        top: 0;
-        left: 20px;
-        transform: translateY(0%);
-        transition: transform .3s ease-in, opacity .3s ease-in;
-        z-index: 0;
+.player {
+   height: $player-height;
+   width: $player-width;
+   background-color: #1E2125;
+   position: absolute;
+  
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   -webkit-transform: translate(-50%, -50%);
 
-    }
-    .music-info h4{
-        margin: 0;
-    }
-    .progress-container{
-        background-color: #fff;
-        border-radius: 5px;
-        cursor: pointer;
-        margin: 10px 0;
-        height: 5px;
-        width: 100%;
-    }
+   ul {
+      list-style: none;
+      li {
+         display: inline-block;
+      }
+   }
+}
 
-    .music-container.play .music-info{
-        opacity: 1;
-        transform: translateY(-100%);
-    }
+.cover {
+   position: absolute;
+   top: 0;
+   left: 0;
+   img {
+      height: $player-height;
+      width: $player-height;
+   }
+}
 
-    .progress{
-        height: 100%;
-        border-radius: 5%;
-        width:50%;
-        background-color: green;
-        transition: width .1s linear;
+.info {
 
-    }
-    
+   h1 {
+      margin-top: 15px;
+      margin-left: 180px;
+      line-height: 0;
+   }
+
+   h4 {
+      margin-left: 180px;
+      line-height: 20px;
+      color: #636367;
+   }
+
+   h2 {
+      margin-left: 180px;
+   }
+}
+
+.button-items {
+   margin-left: 180px;
+}
+
+#slider {
+	width: 182px;
+	height: 4px;
+	background: #151518;
+   border-radius: 2px;
+   div {
+      width: 4px;
+      height: 4px;
+      margin-top: 1px;
+      background: #EF6DBC;
+      border-radius: 2px;
+   }
+}
+
+#timer {
+   color: #494B4E;
+   line-height: 0;
+   font-size: 9pt;
+   float: right;
+   font-family: Arial, Sans-Serif;
+}
+
+.controls {
+   margin-top: 20px;
+
+   svg:nth-child(2) {
+      margin-left: 5px;
+      margin-right: 5px;
+   }
+}
+
+#play {
+   padding: 0 3px;
+   width: 30px;
+   height: 30px;
+   x: 0px;
+   y: 0px;
+   enable-background: new 0 0 25 25;
+
+   g {
+      stroke: #FEFEFE;
+      stroke-width: 1;
+      stroke-miterlimit: 10;
+
+      path {
+         fill: #FEFEFE;
+      }
+   }
+}
+
+#play:hover {
+   cursor: pointer;
+   g {
+      stroke: #8F4DA9;
+      cursor: pointer;
+
+      path {
+         fill: #9b59b6;
+         cursor: pointer;
+      }
+   }
+}
+
+.step-backward {
+   width: 18px;
+   height: 18px;
+   x: 0px;
+   y: 0px;
+   enable-background: new 0 0 25 25;
+   margin-bottom: 5px;
+
+   g polygon {
+      fill: #FEFEFE;
+   }
+}
+
+.step-foreward {
+   width: 18px;
+   height: 18px;
+   x: 0px;
+   y: 0px;
+   enable-background: new 0 0 25 25;
+   margin-bottom: 5px;
+
+   g polygon {
+      fill: #FEFEFE;
+   }
+}
+
+#pause {
+   x: 0px;
+   y: 0px;
+   enable-background: new 0 0 25 25;
+   width: 30px;
+   height: 30px;
+   position: absolute;
+   margin-left: -38px;
+   cursor: pointer;
+
+   rect {
+      fill: white;
+   }
+}
+
+#pause:hover rect {
+   fill: #8F4DA9;
+}
+
+.step-backward g polygon:hover, .step-foreward g polygon:hover {
+   fill: #EF6DBC;
+   cursor: pointer;
+}
+
+.social {
+   text-align: center;
+}
+
+.twitter {
+  color: #BDBDBD;
+  font-family: sans-serif;
+  text-decoration: none;
+  
+  &:hover {
+    color: #ecf0f1;
+  }
+}
+
+.github {
+  color: #BDBDBD;
+  font-family: sans-serif;
+  text-decoration: none;
+  
+  &:hover {
+    color: #ecf0f1;
+  }
+}
+
+p {
+  color: #BDBDBD;
+}
+
+#skip {
+  float: right;
+  margin-top: 10px;
+  
+  p {
+    color: #2980b9;
+  }
+  
+  p:hover {
+    color: #e74c3c;
+    cursor: pointer;
+  }
+}
+
+.expend {
+   padding: 0.5px;
+   cursor: pointer;
+   
+   svg:hover g polygon {
+      fill: #EF6DBC;
+   }
+}
+  
+
 
     
 </style>
@@ -231,25 +366,15 @@
                 <tbody>
                     <tr v-for="(audio, index) in audios">
                         <td v-cloak>
-                            <div class="music-container" id="music-coantainer">
-                                <div class="music-info">
-                                    <h4 id="title">@{{ audio.name }}</h4>
-                                  <div class="progress-container" id="progresscontainer">
-                                    <div id="progress" class="progress"></div>
-                                  </div>
-                                </div>
-                             
-                               <audio id="audio" :src="'/storage/audios/' + audio.file"></audio>
-                               <div class="img-container">
-                                    <!-- <img v-cloak id="cover" width="20" height="20" src="{{ asset('img/disc.png')}}" alt=""> -->
-                                    <img v-cloak id="cover" width="20" height="20" :src="'/storage/audios/cover' + audio.img_cover" alt="">
-                               </div>
-                               <div class="navigation">
-                                   <!-- <button id="prev" class="action-btn"><i class="fas fa-backward"></i></button> -->
-                                   <button id="play" class="action-btn action-btn-big"><i class="fas fa-play"></i></button>
-                                   <!-- <button id="next" class="action-btn"><i class="fas fa-forward"></i></button> -->
-                               </div>
-                            </div>
+                            
+                                
+                                    
+                            <audio  controls id="music">
+                                <source :src="'/storage/audios/' + audio.file" type="audio/mpeg"> 
+                            </audio>
+
+                                
+                            
                         </td>
                         <td v-cloak>@{{ audio.title }}</td>
                         <td v-cloak>@{{ audio.category }}</td>
@@ -397,57 +522,49 @@
 	<script src="{{ asset('plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('plugins/tagsinput/jquery.tagsinput.min.js') }}" type="text/javascript"></script>
 
-  <script>
-      const musicContainer =  document.getElementById("music-coantainer");
-      const progressContainer =  document.getElementById("progress-coantainer");
-      const playBtn =  document.getElementById("play");
-      const prevBtn =  document.getElementById("prev");
-      const nextBtn =  document.getElementById("next");
-      const audio =  document.getElementById("audio");
-      
-      const title =  document.getElementById("title");
+    <script>
+        var music = document.getElementById("music");
+        var playButton = document.getElementById("play");
+        var pauseButton = document.getElementById("pause");
+        var playhead = document.getElementById("elapsed");
+        var timeline = document.getElementById("slider");
+        var timer = document.getElementById("timer");
+        var duration;
+        pauseButton.style.visibility = "hidden";
+
+        var timelineWidth = timeline.offsetWidth - playhead.offsetWidth;
+        music.addEventListener("timeupdate", timeUpdate, false);
+
+            function timeUpdate() {
+                var playPercent = timelineWidth * (music.currentTime / duration);
+                playhead.style.width = playPercent + "px";
+
+                var secondsIn = Math.floor(((music.currentTime / duration) / 3.5) * 100);
+                if (secondsIn <= 9) {
+                    timer.innerHTML = "0:0" + secondsIn;
+                } else {
+                    timer.innerHTML = "0:" + secondsIn;
+                }
+            }
+
+            playButton.onclick = function() {
+                music.play();
+                playButton.style.visibility = "hidden";
+                pause.style.visibility = "visible";
+            }
+
+            pauseButton.onclick = function() {
+                music.pause();
+                playButton.style.visibility = "visible";
+                pause.style.visibility = "hidden";
+            }
+
+            music.addEventListener("canplaythrough", function () {
+                duration = music.duration;
+            }, false);
+    </script>
 
 
-      const songs = [];
-      let songIndex = 2;
-      loadSong(songs[songIndex]);
-
-      function loadSong(song){
-         title.innerText = song; 
-         audio.src = `storage/audios/${song}`;
-      }
-
-      playBtn.addEventListener('click', () => {
-          const isPlaying = musicContainer.classList.contains("play");
-        //   isPlaying ? pauseSong() : playSong();
-        
-          if(isPlaying){
-            pauseSong();
-          }else{
-            playSong();
-          }
-      });
-
-      function playSong(){
-          musicContainer.classList.add("play");
-          playBtn.querySelector("i.fas").classList.remove("fa-play");
-          playBtn.querySelector("i.fas").classList.add("fa-pause");
-
-          audio.play();
-      }
-
-
-      function pauseSong(){
-          musicContainer.classList.add("play");
-          playBtn.querySelector('i.fas').classList.add("fa-play");
-          playBtn.querySelector('i.fas').classList.remove("fa-pause");
-
-          audio.pause();
-      }
-
-
-
-  </script>
     <script>
 
         $(function(){

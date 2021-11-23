@@ -52,27 +52,19 @@ class AudioController extends Controller
                 }
                 
            
-            if($request->hasFile("audio_track") || $request->hasFile("img_cover")){
+            if($request->hasFile("audio_track")){
                 $track_path = storage_path('app/' . Paths::PLAYLIST_PATH);
-                $imgCover = storage_path('app/' . Paths::COVER);
-                $coverExtension = $request->file('img_cover')->getClientOriginalExtension();
                 $extension = $request->file('audio_track')->getClientOriginalExtension();
-                if (in_array(strtolower($extension), ["mp3", "wav", "aac"])
-                     || in_array(strtolower($coverExtension),  ["png", "jpg", "jpeg"])) {
+                if (in_array(strtolower($extension), ["mp3", "wav", "aac"])) {
                     
                     $fileName = (string) "IMAAFRICA" . time() . '.' . $extension;
-                    $imageCoverName = (string) "Music-Cover" . time() . '.' . $coverExtension;
                     $request->file('audio_track')->move($track_path, $fileName);
-                    $request->file('img_cover')->move($imgCover, $imageCoverName);
 
-                    
                     $track = new AudioModel();
                     $track->user_id = Auth::id();
                     $track->file =  $fileName;
-                    $track->img_cover =  $imageCoverName;
                     $track->category = $request->category;
                     $track->uuid = \Str::uuid();
-                    // $track->name = $request->name;
                     $track->title = $request->title;
                     $track->save();
                     $message = "Request Completed!";
