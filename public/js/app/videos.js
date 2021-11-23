@@ -16,8 +16,11 @@ new Vue({
         videoEdit: {
             contributor: "",
             category: "",
-            title: ""
+            title: "",
+            id: ""
         },
+
+
         gif_path: "",
         watermark_path: "",
         
@@ -28,8 +31,7 @@ new Vue({
                 create: "",
                 update: "",
                 delete: "",
-                edit: ``,
-               
+                edit: ``,  
            }
         },
 
@@ -56,6 +58,8 @@ new Vue({
              input.type = "button";
              input.style.display = "none";   
           },
+
+
           remove() {
             this.videoFile = "";
             let input = document.getElementById("assetsFieldHandle");
@@ -63,7 +67,6 @@ new Vue({
           },
 
           dragover(event) {
-            //   console.log('event...',event)
             event.preventDefault();
             if (!event.currentTarget.classList.contains('bg-green-300')) {
               event.currentTarget.classList.remove('dropzone');
@@ -98,9 +101,7 @@ new Vue({
             const formData = new FormData();
             formData.append('video',  this.videoFile);
             formData.append('_token', $('input[name=_token]').val());
-
-            axios.post(this.url.video.create, formData)
-            .then((response) => {
+            axios.post(this.url.video.create, formData).then((response) => {
                 this.isLoading = false;
                 this.$toastr.Add({
                     msg: response.data.message, 
@@ -114,8 +115,6 @@ new Vue({
                 });
                 $('#videoUpload').modal('hide');
                 this.videos.push(Object.assign({}, response.data.video, {}));
-                // let data = response.data;
-                // console.log('response...',response);
                 window.location.href = response.data.url
 
             }).catch((error) => {
@@ -139,14 +138,13 @@ new Vue({
 
             updateVideoDetails(){
                 this.isLoading = true;
-                const formData = new FormData();
-                for (let key in this.videoEdit) {
-                    let value = this.videoEdit[key];
-                    formData.append(key, value);
-                }
-                formData.append('_token', $('input[name=_token]').val());
-    
-                axios.post(this.url.video.update, formData)
+                axios.post(this.url.video.update, {
+                    id: this.videoEdit.id,
+                    title: this.videoEdit.title,
+                    contributor: this.videoEdit.contributor,
+                    category: this.videoEdit.category,
+                    _token: $('input[name=_token]').val()
+                })
                 .then((response) => {
                     this.isLoading = false;
                     this.$toastr.Add({

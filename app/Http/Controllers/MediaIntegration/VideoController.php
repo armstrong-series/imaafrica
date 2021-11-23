@@ -167,12 +167,14 @@ private function generateVideoWatermark($videoSource, $extension, $watermark = "
 
 public function updateVideoDetails(Request $request){
     try {
+
+        dd($request->all());
         $video = VideoModel::where('id', $request->id)->first();
         if(!$video){
             $message = "Video not found!";
             return response()->json(["message" => $message], 404);
         }
-        $video->title =  $request->title;
+        $video->title =  $request->title ? $request->title : $video->title;
         $video->category = $request->category ? $request->category : $video->category;
         $video->contributor = $request->contributor ? $request->contributor : $video->contributor;
         $video->save();

@@ -47,8 +47,6 @@ if (window.Vue) {
         },
 
 
-
-
         mounted() {
           
             this.audios = JSON.parse($('#playlists').val());
