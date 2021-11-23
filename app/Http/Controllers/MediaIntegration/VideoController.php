@@ -117,15 +117,13 @@ public function videoUploadHandler(Request $request){
             }
        
     } catch (Exception $error) {
-        // dd($error);
         Log::info('MediaIntegration\VideoController@videoUploadHandler error message: ' . $error->getMessage());
         $message = "Unable to Upload video";
-        // return $error;
-        return response()->json([
+            return response()->json([
             "message" => $message,
             "error" => $error,
             ],500);
-    }
+       }
 
 }
 
