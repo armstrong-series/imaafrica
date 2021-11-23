@@ -17,7 +17,8 @@ new Vue({
             contributor: "",
             category: "",
             title: "",
-            id: ""
+            id: "",
+            uuid: ""
         },
 
 
@@ -44,8 +45,9 @@ new Vue({
         this.url.video.create = $("#uploadVideo").val();
         this.url.video.delete = $("#deletVideo").val();
         this.url.video.edit = $("#edit-video").val() + '/';
-        
-       
+        let uuid = window.location.href.split("/").reverse()[0];
+        this.videoEdit.uuid = uuid;
+    //    console.log('uuid...',uuid);
     },
 
   
@@ -137,9 +139,11 @@ new Vue({
             },
 
             updateVideoDetails(){
+                // console.log('edit..', this.videoEdit);
+
                 this.isLoading = true;
                 axios.post(this.url.video.update, {
-                    id: this.videoEdit.id,
+                    uuid: this.videoEdit.uuid,
                     title: this.videoEdit.title,
                     contributor: this.videoEdit.contributor,
                     category: this.videoEdit.category,
@@ -158,13 +162,7 @@ new Vue({
                         style: {backgroundColor: "green"}
                     });
                     this.isLoading = false;
-                    var editedVideo = response.data.video;
-                    this.videos = this.audios.map((video) => {
-                        if (video.id === editedVideo.id) {
-                            video = Object.assign({}, editedVideo);
-                        }
-                        return video;
-                    });
+                    
                     window.location.reload();
                         
                 

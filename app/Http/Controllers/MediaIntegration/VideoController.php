@@ -44,6 +44,25 @@ public function videos(){
     }
 }
 
+// public function getVideo(){
+//     try {
+       
+//         $video = VideoModel::all();
+       
+//         $data = [
+//             "page" => "videos",
+//             "video" => $video, 
+            
+//         ];
+//         return view('Media.video.index', $data);
+        
+//     } catch (Exception $error) {
+//        Log::info('MediaIntegration\VideoController@videos error message: ' . $error->getMessage());
+//        $message = "Unable to get Resource";
+//        return $message;
+//     }
+// }
+
 
 
 public function videoUploadHandler(Request $request){
@@ -168,8 +187,8 @@ private function generateVideoWatermark($videoSource, $extension, $watermark = "
 public function updateVideoDetails(Request $request){
     try {
 
-        dd($request->all());
-        $video = VideoModel::where('id', $request->id)->first();
+        // dd($request->all());
+        $video = VideoModel::where('uuid', $request->uuid)->first();
         if(!$video){
             $message = "Video not found!";
             return response()->json(["message" => $message], 404);

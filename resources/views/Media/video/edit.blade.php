@@ -21,9 +21,8 @@
         @csrf
        <div class="col-md-8">
             <div class="vid-container">
-                <video id="video-player" style="padding:20px; border-radius:9%; width:60%; height:58%;" playsinline controls  loop >
-                     <source src="/storage/videos/{{ $video->file }}" type="video/mp4"> 
-                    
+                <video class="video-js" id="video-player" style="padding:20px; border-radius:9%; width:60%; height:58%;" playsinline controls  loop >
+                     <source src="/storage/videos/{{ $video->file }}" type="video/mp4">    
                 </video>    
             </div>
        </div>
