@@ -62,8 +62,8 @@
                             <video v-cloak width="300" height="220" controls>
                                 <source :src="'/storage/videos/' + video.file">  
                             </video>
-                            <h5 v-cloak class="card-title">@{{ video.name }}</h5>
-                            <div class="btn-group">
+                            <h5 v-cloak class="card-title" style="text-align: center;">@{{ video.title }}</h5>
+                            <div v-cloak class="btn-group">
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-th-large"></i> 
                                 </button>

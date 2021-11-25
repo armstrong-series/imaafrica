@@ -55,6 +55,7 @@
     </div>
     <textarea name="" id="updateDetails"  style="display:none;" cols="30" rows="10">{{ route('users.video-details.update') }}</textarea>
     <textarea name="" id="videos"  style="display:none;" cols="30" rows="10">{{ json_encode($video) }}</textarea>
+    <textarea name="" id="get_video"  style="display:none;" cols="30" rows="10">{{ route('user.fetch.video') }}</textarea>
 
 </main>
 @endsection

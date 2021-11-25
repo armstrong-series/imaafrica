@@ -44,24 +44,24 @@ public function videos(){
     }
 }
 
-// public function getVideo(){
-//     try {
+public function getVideo(Request $request){
+    try {
        
-//         $video = VideoModel::all();
-       
-//         $data = [
-//             "page" => "videos",
-//             "video" => $video, 
-            
-//         ];
-//         return view('Media.video.index', $data);
+        $video = VideoModel::where('uuid', $request->uuid)->first();
+            if(!$video){
+                $message = "Video not found!";
+                   return response()->json(["message" => $message], 404);
+            }
+
+        return response()->json(["video" => $video,"status" => "success"], 200);
         
-//     } catch (Exception $error) {
-//        Log::info('MediaIntegration\VideoController@videos error message: ' . $error->getMessage());
-//        $message = "Unable to get Resource";
-//        return $message;
-//     }
-// }
+        
+    } catch (Exception $error) {
+       Log::info('MediaIntegration\VideoController@getVideo error message: ' . $error->getMessage());
+       $message = "Unable to get Resource";
+       return $message;
+    }
+}
 
 
 

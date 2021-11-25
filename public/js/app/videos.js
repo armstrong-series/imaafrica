@@ -33,7 +33,8 @@ new Vue({
                 update: "",
                 delete: "",
                 edit: ``,  
-           }
+           },
+           get_video: ""
         },
 
     },
@@ -41,18 +42,26 @@ new Vue({
 
     mounted() {
         this.videos = JSON.parse($('#videos').val());
+        this.url.get_video = $("#get_video").val();
         this.url.video.update = $("#updateDetails").val();
         this.url.video.create = $("#uploadVideo").val();
         this.url.video.delete = $("#deletVideo").val();
         this.url.video.edit = $("#edit-video").val() + '/';
         let uuid = window.location.href.split("/").reverse()[0];
         this.videoEdit.uuid = uuid;
-    //    console.log('uuid...',uuid);
+    
     },
 
   
 
     methods: {
+
+        fetchVideo(){
+            axios.get(this.url.get_video).then(response => {
+                this.members = response.data.members
+
+            })
+        },
         onChange() {
            let input = document.getElementById("assetsFieldHandle") 
             this.videoFile = this.$refs.file.files[0];
