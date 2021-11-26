@@ -350,10 +350,11 @@ p {
     <header class="mb-4 d-flex align-items-center justify-content-between"></header>
      <div>
         <div class="container margin-bottom-40 padding-top-40">
+            @if(Auth::user())  
             <button data-target="#audioUpload" title="Add a track" style="padding:8px;" data-toggle="modal" class="btn btn-primary">
-              Add Track
-            <!-- <i class="fas fa-headphones"></i> -->
+            Add Track
             </button>
+            @endif
             <table class="table table-striped">
                 <thead>
                     <tr>

@@ -231,8 +231,8 @@ Route::group(['middleware' => 'auth'], function() {
 
 
 	// Videos
-	Route::get('/videos', 'MediaIntegration\VideoController@videos')->name('users.videos');
-	Route::get('/video/download/{file?}', 'MediaIntegration\VideoController@downloadVideo')->name('users.video.download');
+	Route::get('/videos', 'MediaIntegration\VideoController@videos')->withoutMiddleware(['auth'])->name('users.videos');
+	Route::get('/video/download/{file?}', 'MediaIntegration\VideoController@downloadVideo')->withoutMiddleware(['auth'])->name('users.video.download');
 	Route::get('/upload/videos', 'MediaIntegration\VideoController@uploadPage')->name('videos.upload.page');
 	Route::post('/upload/videos', 'MediaIntegration\VideoController@videoUploadHandler')->name('users.videos.upload');
 	Route::get('/videos/edit/{videouuid?}', 'MediaIntegration\VideoController@editVideo')->name('user.video.edit');
@@ -240,7 +240,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/video/delete', 'MediaIntegration\VideoController@deleteVideo')->name('users.video.delete');
 	Route::get('/get-video', 'MediaIntegration\VideoController@getVideo')->name('user.fetch.video');
 	//    Audio 
-	Route::get('/audios', 'MediaIntegration\AudioController@getAudioPlaylist')->name('user.audio');
+	Route::get('/audios', 'MediaIntegration\AudioController@getAudioPlaylist')->withoutMiddleware(['auth'])->name('user.audio');
 	Route::post('/audio/upload', 'MediaIntegration\AudioController@audioPlaylistHandler')->name('user.audio.upload');
 	Route::post('/audio/update/details', 'MediaIntegration\AudioController@updateTrackDetails')->name('user.audio.update');
 	Route::post('/delete-track', 'MediaIntegration\AudioController@deleteTrack')->name('users.delete-track');

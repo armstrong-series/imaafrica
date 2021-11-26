@@ -49,10 +49,12 @@
 
 <main id="media">
     <div>
+        @if(Auth::user())  
         <header class="mb-4 d-flex align-items-center justify-content-between">
             <h3 class="mb-0">Videos</h3>
             <button data-target="#videoUpload"  data-toggle="modal" class="btn btn-primary px-4 py-2">Create New</button>
         </header>
+        @endif
         <div class="container margin-bottom-40 padding-top-40"  >
             <div class="row" >
                 <div class="col-md-4" v-for="(video, index) in videos"  style="padding:8px;">
@@ -64,17 +66,20 @@
                             </video>
                             <h5 v-cloak class="card-title" style="text-align: center;">@{{ video.title }}</h5>
                             <div v-cloak class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-th-large"></i> 
                                 </button>
                                 <ul class="dropdown-menu">   
                                     <!-- <li><a href="javascript:void(0)">View</a></li> -->
-                                    
+                                    @if(Auth::user())           
                                     <li><a :href="url.video.edit + video.uuid" data-toggle="modal">Edit </a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="javascript:void(0)" @click="downloadVideo(video.file)"  title="Download" class="alert-link">Download</li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="javascript:void(0)" @click="deleteVideo(index)" class="alert-link">Delete</a></li>
+                                    @endif
+                                    <li><a href="javascript:void(0)" @click="downloadVideo(video.file)"  title="Download" class="alert-link">Download</li>
+
                                 </ul>
                             </div>
                         </div>
