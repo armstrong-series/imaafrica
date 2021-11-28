@@ -50,6 +50,19 @@ new Vue({
         let uuid = window.location.href.split("/").reverse()[0];
         this.videoEdit.uuid = uuid;
     
+
+        axios.get(this.url.get_video).then(response => {
+            const video = response.data.video
+            console.log('video...', video)
+            this.videoEdit = {
+                contributor: video.contributor,
+                category: video.categrory,
+                title: video.title,
+                id: video.id,
+                uuid: video.uuid
+            }
+
+        })
     },
 
   
@@ -58,14 +71,14 @@ new Vue({
 
         fetchVideo(){
             axios.get(this.url.get_video).then(response => {
-                this.members = response.data.members
+                this.videos = response.data.video
 
             })
         },
         onChange() {
            let input = document.getElementById("assetsFieldHandle") 
             this.videoFile = this.$refs.file.files[0];
-            console.log(this.videoFile)
+            // console.log(this.videoFile)
              input.type = "button";
              input.style.display = "none";   
           },

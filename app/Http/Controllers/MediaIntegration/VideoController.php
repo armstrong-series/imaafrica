@@ -92,12 +92,12 @@ public function videoUploadHandler(Request $request){
                 //     $video->save();
                 // }
 
-                // $watermark = asset("img/imaafica.png");
-                // $videoWatermark = $this->generateVideoWatermark($video, $extension, $watermark);
-                // if($videoWatermark['status'] == true){
-                //     $video->video_watermark =  $videoWatermark['watermark'];
-                //     $video->save();
-                // }
+                $watermark = asset("img/imaafica.png");
+                $videoWatermark = $this->generateVideoWatermark($request->file('video'), $extension, $watermark);
+                if($videoWatermark['status'] == true){
+                    $video->video_watermark =  $videoWatermark['watermark'];
+                    $video->save();
+                }
                
                 $message = "Upload Successful!";
                 
@@ -152,21 +152,22 @@ public function editVideo($videouuid){
 
 
 
-private function generateVideoWatermark($videoSource, $extension, $watermark = "")
+private function generateVideoWatermark($videoSource, $extension, $watermarkPath = "")
 {
     $ffmpeg = FFMpeg\FFMpeg::create();
     $video = $ffmpeg->open($videoSource);
     $format = new FFMpeg\Format\Video\X264('libmp3lame', 'libx264');
 
     if (!empty($watermark)){
-        $video->filters()->watermark($watermark, array(
+        $video->filters()->watermark($watermarkPath, array(
             'position' => 'relative',
-            'top' => 25,
+            'top' => 50,
             'right' => 50,
         ));
     }
 
-    $format-> setKiloBitrate(1000)-> setAudioChannels(2)
+    $format-> setKiloBitrate(1000)
+    -> setAudioChannels(2)
     -> setAudioKiloBitrate(256);
 
     $randomFileName = "Imaafrica-watermark".rand().".$extension";

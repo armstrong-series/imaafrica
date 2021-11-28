@@ -152,14 +152,14 @@
                       	<select name="how_use_image" class="form-control">
                             <option value="free">{{ trans('misc.use_free') }}</option>
                             <option value="free_personal">{{ trans('misc.use_free_personal') }}</option>
-                             <option value="editorial_only">{{ trans('misc.use_editorial_only') }}</option>
-                              <option value="web_only">{{ trans('misc.use_web_only') }}</option>
+                            <option value="editorial_only">{{ trans('misc.use_editorial_only') }}</option>
+                            <option value="web_only">{{ trans('misc.use_web_only') }}</option>
                           </select>
-                  </div><!-- /.form-group-->
+                      </div><!-- /.form-group-->
 
                   <!-- Start Form Group -->
                     <div class="form-group">
-                      <label>{{ trans('misc.type_image') }}</label>
+                        <label>{{ trans('misc.type_image') }}</label>
                       	<select name="type_image" class="form-control" id="typeImage">
                             <option value="image">{{ trans('misc.image') }}</option>
                             <option value="vector">{{ trans('misc.type_vector_graphic') }}</option>

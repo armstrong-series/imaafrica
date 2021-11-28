@@ -1,6 +1,8 @@
 @extends('app')
 
-@section('title'){{ trans('users.upload').' - ' }}@endsection
+@section('title')
+    Audio
+@endsection
 
 
 @section('css')
