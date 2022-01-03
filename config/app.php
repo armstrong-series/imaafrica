@@ -67,6 +67,9 @@ return [
 
     'timezone' => 'America/Caracas',
 
+
+    'dev_os' => env('OS', 'linux'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration

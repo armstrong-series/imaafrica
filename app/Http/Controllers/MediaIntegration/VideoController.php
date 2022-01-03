@@ -154,7 +154,18 @@ public function editVideo($videouuid){
 
 private function generateVideoWatermark($videoSource, $extension, $watermarkPath = "")
 {
-    $ffmpeg = FFMpeg\FFMpeg::create();
+
+    if (config('app.dev_os') != 'linux') {
+        $ffmpeg = \FFMpeg\FFMpeg::create([
+            // 'ffmpeg.binaries' => '/usr/local/bin/ffmpeg',
+            // 'ffprobe.binaries' => '/usr/local/bin/ffprobe',
+            'ffmpeg_binaries' => '/usr/bin/ffmpeg', 
+            'ffprobe_binaries' => '/usr/bin/ffprobe', 
+        ]);
+    } else {
+        $ffmpeg = \FFMpeg\FFMpeg::create();
+    }
+    // $ffmpeg = FFMpeg\FFMpeg::create();
     $video = $ffmpeg->open($videoSource);
     $format = new FFMpeg\Format\Video\X264('libmp3lame', 'libx264');
 
